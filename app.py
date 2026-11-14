@@ -14,7 +14,7 @@ def weighted_similarity(raw_array_a,raw_array_b,weights):
         print("Division by zero")
         return 0.0
     else:
-        return numerator/denominator
+        return round(numerator/denominator)
     
 
 print(weighted_similarity(a,b,we))
