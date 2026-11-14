@@ -13,11 +13,10 @@ def weighted_similarity(raw_array_a,raw_array_b,weights):
         print("Division by zero")
         return 0.0
     else:
-        return int(weigthedsim*100)/100
+      return int(weigthedsim*100)/100
 
 def sir_compares_a_lot():
     pass
-
 
 
 
