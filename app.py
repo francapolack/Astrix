@@ -11,8 +11,9 @@ def weighted_similarity(raw_array_a,raw_array_b,weights):
     numerator=np.sum(w*array_a*array_b)#top part of the WS ecuation
     denominator=np.sqrt(np.sum(w*(array_a*2)))*np.sqrt(np.sum(w*(array_b*2)))#bottom part
     weigthed_sim=numerator/denominator
+    if weigthed_sim
 
-print(weighted_similarity(a,b))
+print(weighted_similarity(a,b,we))
 
 
 
