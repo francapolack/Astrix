@@ -1,8 +1,6 @@
 import numpy as np
 #FUNCION DE SIMILTUD EJ
-a=[1,2,3]
-b=[3,2,1]
-we=[1,0.0,0.5]
+#PARA ESTA FUNCION NECESITO *FILAS DE DATOS*!!! 
 def weighted_similarity(raw_array_a,raw_array_b,weights):
     array_a=np.array(raw_array_a)
     array_b=np.array(raw_array_b)
@@ -10,14 +8,16 @@ def weighted_similarity(raw_array_a,raw_array_b,weights):
 
     numerator=np.sum(w*array_a*array_b)#top part of the WS ecuation
     denominator=np.sqrt(np.sum(w*(array_a*2)))*np.sqrt(np.sum(w*(array_b*2)))#bottom part
+    weigthedsim=numerator/denominator
     if denominator==0:
         print("Division by zero")
         return 0.0
     else:
-        return round(numerator/denominator)
-    
+        return int(weigthedsim*100)/100
 
-print(weighted_similarity(a,b,we))
+def sir_compares_a_lot():
+    pass
+
 
 
 
