@@ -25,9 +25,10 @@ categories={
    "Geologic": geocats,
    "Chemical": chemcats
 }
+medium_list=[i for i in range(0,0,0.1)]#im not writing all these nuimbers lets be real
 category_weights={
    "a lot":1,#importa mucho
-   "medium":,#importa un tanto
+   "medium":medium_list,#importa un tanto
    "not much":0#no importa 
 }
 #FUNCION DE SIMILTUD EJ
@@ -37,7 +38,7 @@ def weighted_similarity(raw_array_a,raw_array_b):
     array_b=np.array(raw_array_b)
     weights_input=str(input("How important is this category to you?:"))
     if weights_input=="a lot":#esto es un click del mouse?
-       
+       pass#im wortking on this ignore it
     w=np.array(weights)
 
     numerator=np.sum(w*array_a*array_b)#top part of the WS ecuation
@@ -49,7 +50,9 @@ def weighted_similarity(raw_array_a,raw_array_b):
     else:
       return int(weigthedsim*100)/100
     
-
+#FUNCION QUE NO USA LA SIMILTUD
+def sir_compares_a_lot(array1,array2):
+    np.isin(array1,array2)
 
 
 
