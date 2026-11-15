@@ -1,11 +1,13 @@
 import numpy as np
 #CLASIFICACION DE CATEGORIAS
 #all list of categories
-atmospherecats=[]
-geocats=[]
-chemcats=[]
+atmospherecats=["oksoisortofneedtheapisresult4this"]
+geocats=[""]
+chemcats=[""]
 categories={
-   "Atmosfera": 
+   "Atmospheric": atmospherecats,
+   "Geologic": geocats,
+   "Chemical": chemcats
 }
 #FUNCION DE SIMILTUD EJ
 #PARA ESTA FUNCION NECESITO *FILAS DE DATOS*!!! 
