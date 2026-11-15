@@ -1,6 +1,6 @@
 # ASTRIX
 ![ASTRIX Logo](https://github.com/[francapolack]/[Astrix]/blob/[main]/logo.png?raw=true)
-<pre>
+</br>
 Welcome to Astrix! This is BK2s submission for the Nasa Space Apps 2026
 ## How Astrix works
 Astrix is a dashboard system which presents analog locations to a user via data processing. 
@@ -28,4 +28,3 @@ aca pongan d lo q se encargaron ns
 *@AriasRominaFlorencia*
 **Sofia Grillo**
 *@sofigrillo16-lec*
-<pre>

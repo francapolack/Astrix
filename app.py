@@ -1,4 +1,12 @@
 import numpy as np
+#CLASIFICACION DE CATEGORIAS
+#all list of categories
+atmospherecats=[]
+geocats=[]
+chemcats=[]
+categories={
+   "Atmosfera": 
+}
 #FUNCION DE SIMILTUD EJ
 #PARA ESTA FUNCION NECESITO *FILAS DE DATOS*!!! 
 def weighted_similarity(raw_array_a,raw_array_b,weights):
@@ -15,8 +23,6 @@ def weighted_similarity(raw_array_a,raw_array_b,weights):
     else:
       return int(weigthedsim*100)/100
 
-def sir_compares_a_lot():
-    pass
 
 
 
