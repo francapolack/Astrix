@@ -49,7 +49,8 @@ def weighted_similarity(raw_array_a,raw_array_b):
     else:
       return int(weigthedsim*100)/100
     
-
-
+#FUNCION QUE NO USA LA SIMILTUD
+for i in range(len(array1)):
+   
 
 
