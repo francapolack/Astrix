@@ -1,1 +1,0 @@
-   "medium":medium_list,#importa un tanto
