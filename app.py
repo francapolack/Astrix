@@ -50,7 +50,6 @@ def weighted_similarity(raw_array_a,raw_array_b):
     else:
       return int(weigthedsim*100)/100
     
-#FUNCION QUE NO USA LA SIMILTUD
 def sir_compares_a_lot(array1,array2):
     np.isin(array1,array2)
 
