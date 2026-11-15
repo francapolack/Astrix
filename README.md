@@ -18,13 +18,18 @@ aca pongan imagenes del codigo
 **Alma Tolosa**
 *@TolosaAlma*
 aca pongan d lo q se encargaron ns
+<br>
 **Facundo Roda**
 *@AxelRoda202*
+<br>
 **Franca Polack**
 *@francapolack*
+<br>
 **Matias Gil**
 *@escudero819*
+<br>
 **Romina Arias**
 *@AriasRominaFlorencia*
+<br>
 **Sofia Grillo**
 *@sofigrillo16-lec*
