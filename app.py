@@ -1,7 +1,17 @@
 import numpy as np
+import pandas as pd
+#TEST ARFEA
+#over here are the thibngs i test my functions w/
+#so tempone,tempmax,tempmin,elev,rugosidad,minerals,atmospheric minerals(LOS MINERALES ENCONTRADOS EN EL PLANETA TENDRIAN QUE SER COLUMNAS CON EL MINERAL Y 1/0)
+array1=[0.77,1,2,3.3,4,2,1,1,0]
+cleanarray1=[float(i) for i in array1]
+df1=pd.DataFrame(cleanarray1)
+array1=[0.77,1,2,3.3,4,2,1,1,0]
+cleanarray1=[float(i) for i in array1]
+df1=pd.DataFrame()
 #CLASIFICACION DE CATEGORIAS
 #all list of categories
-atmospherecats=["oksoisortofneedtheapisresult4this"]
+atmospherecats=["temperature"]
 geocats=[""]
 chemcats=[""]
 categories={
