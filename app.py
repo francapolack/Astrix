@@ -42,8 +42,6 @@ def weighted_similarity(raw_array_a,raw_array_b):
     weights_input=str(input("How important is this category to you?:"))
     if weights_input=="a lot":#esto es un click del mouse?
        weights=[1]*len(array_a)
-    else:
-        pass
     w=np.array(weights)
     numerator=np.sum(w*array_a*array_b)#top part of the WS ecuation
     denominator=np.sqrt(np.sum(w*(array_a*2)))*np.sqrt(np.sum(w*(array_b*2)))#bottom part
@@ -52,13 +50,13 @@ def weighted_similarity(raw_array_a,raw_array_b):
         print("Division by zero")
         return 0.0
     else:
-      print(int(weigthedsim*100)/100)
+      matches=int(weigthedsim*100)/100
+      print(f"\n{matches}")
 
 def sir_compares_a_lot(a1,a2):#array number one which should be the array generated from the user analog preferences
     #the other is a array with all the lists
     matches=np.isin(a1,a2)
     return matches
-#sir_compares_a_lot(array1,array2)
-weighted_similarity(array1,array3) 
+
 
 
