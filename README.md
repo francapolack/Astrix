@@ -16,16 +16,20 @@ aca pongan imagenes del codigo
 4) Shows all the data in the dashboard
 ## Credits: The BK2s Team
 **Alma Tolosa**
+<br>
 *@TolosaAlma*
 aca pongan d lo q se encargaron ns
 <br>
 **Facundo Roda**
+<br>
 *@AxelRoda202*
 <br>
 **Franca Polack**
+<br>
 *@francapolack*
 <br>
 **Matias Gil**
+<br>
 *@escudero819*
 <br>
 **Romina Arias**
