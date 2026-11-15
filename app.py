@@ -6,7 +6,9 @@ import pandas as pd
 array1=[0.77,1,2,3.3,4,2,1,1,0]#model dataframe
 cleanarray1=np.float64(array1)
 df1=pd.DataFrame(cleanarray1)
-array2=[0.77,1.0,2,3.3,4,2,1,1,1]
+array2=[[0.77,1,2,3.3,4,2,1,1,0],
+        [0.77,1,2,3.3,4,2,1,1,0],
+        [0.77,1,2,3.3,4,2,1,1,0]]
 #case for minerals having the most weight
 array2=np.array(array2)
 cleanarray2=np.float64(array2)
@@ -36,8 +38,17 @@ def weighted_similarity(raw_array_a,raw_array_b,weights):
     array_a=np.array(raw_array_a)
     array_b=np.array(raw_array_b)
     w=np.array(weights)
-    distance=np.sqrt()
-    return print(f"Valor de la Similitud Ponderada:{matches}")
+    for i in range(0,len(array_b)):
+        for j in range(0,len(array_b[0])): 
+         distance=np.sqrt((np.sum(w*((array_a-array_b[i][j])**2))))
+         matches=1/(1+distance)
+         index_matches.append(i)
+         index_matches.append(j)
+         all_matches.append(matches)
+    max_matches=max(all_matches)
+    index=all_matches.index(max_matches)
+    index_max=index_matches[index-1],index_matches[index-2]
+    return print(f"Valor de la Similitud Ponderada:{round(max_matches)},Fila en la que pertenece:{index_max}")
       
 
 weighted_similarity(df1,df2,array3)
