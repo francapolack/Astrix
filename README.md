@@ -1,5 +1,5 @@
 # ASTRIX
-![ASTRIX Logo](https://github.com/[francapolack]/[Astrix]/blob/[main]/logo.png?raw=true)
+![ASTRIX Logo](https://github.com/francapolack/Astrix/blob/main/logo.png?raw=true)
 </br>
 Welcome to Astrix! This is BK2s submission for the Nasa Space Apps 2026
 ## How Astrix works
