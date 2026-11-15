@@ -6,7 +6,8 @@ import pandas as pd
 array1=[0.77,1,2,3.3,4,2,1,1,0]#model dataframe
 cleanarray1=[float(i) for i in array1]
 df1=pd.DataFrame(cleanarray1)
-array2=[0.67,6,1,0.0,2,3,1,1,0]#case for minerals having the most weight
+array2=[[0.77,1,2,3.3,4,2,1,1,1],[0.67,6,1,0.0,2,3,1,1,0],[0,0,0,1,2,3,0,0,1],[0.77,1,1,2,0,0,0,0,0]]
+#case for minerals having the most weight
 cleanarray2=[float(i) for i in array2]
 df2=pd.DataFrame(cleanarray2)
 array3=[0,0,0,1,2,3,0,0,1]#case for geologicals having the most weight
@@ -50,8 +51,11 @@ def weighted_similarity(raw_array_a,raw_array_b):
     else:
       return int(weigthedsim*100)/100
     
-def sir_compares_a_lot(array1,array2):
-    np.isin(array1,array2)
+def sir_compares_a_lot(a1,a2):#array number one which should be the array generated from the user analog preferences
+    #the other is a array with all the lists
+    matches=np.isin(a1,a2)
+    return matches
+sir_compares_a_lot()
 
 
 
