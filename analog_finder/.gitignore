@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Entornos virtuales
+.venv/
+.venv-*/
+
+# Flet
+.flet/
+
+# Datos locales del usuario
+data/historial.json
