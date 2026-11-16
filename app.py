@@ -6,14 +6,19 @@ import pandas as pd
 array1=[0.77,1,2,3.3,4,2,1,1,0]#model dataframe
 cleanarray1=np.float64(array1)
 df1=pd.DataFrame(cleanarray1)
-array2=[[0.77,1,2,3.3,4,2,1,1,0],
+array2=[
         [0.77,1,2,3.3,4,2,1,1,0],
-        [0.77,1,2,3.3,4,2,1,1,0]]
+        [0,1,2,3.3,4,2,0,0,0],
+        [0,1,2,3.3,4,2,0,0,0],
+        [0,1,2,3.3,4,2,0,0,0],
+        [0,1,2,3.3,4,2,0,0,0]
+      ]
 #case for minerals having the most weight
+df2=pd.DataFrame(array2)
+print(df2)
 array2=np.array(array2)
 cleanarray2=np.float64(array2)
-df2=pd.DataFrame(cleanarray2)
-array3=[0,0,0.5,1,0.6,0.7,0.9,1]
+array3=[0,1,0.5,0,0,0.5,1,1,0]
 #CLASIFICACION DE CATEGORIAS
 #all list of categories
 atmospherecats=["temperature"]
@@ -38,20 +43,17 @@ def weighted_similarity(raw_array_a,raw_array_b,weights):
     array_a=np.array(raw_array_a)
     array_b=np.array(raw_array_b)
     w=np.array(weights)
+    first_part=(array_b-array_a)**2
+    distance=np.sqrt(np.sum(w*first_part,axis=-1))
+    matches=1/(1+distance)
+    max_index=None
+    max_match=max(matches)
     for i in range(0,len(array_b)):
-        for j in range(0,len(array_b[0])): 
-         distance=np.sqrt((np.sum(w*((array_a-array_b[i][j])**2))))
-         matches=1/(1+distance)
-         index_matches.append(i)
-         index_matches.append(j)
-         all_matches.append(matches)
-    max_matches=max(all_matches)
-    index=all_matches.index(max_matches)
-    index_max=index_matches[index-1],index_matches[index-2]
-    return print(f"Valor de la Similitud Ponderada:{round(max_matches)},Fila en la que pertenece:{index_max}")
-      
-
-weighted_similarity(df1,df2,array3)
+        for j in range(0,len(array_b[0])):
+            if array_b[i][j]==max_match:
+                max_index=i
+    return print(f"Valor de la mayor Similitud Ponderada:{max_match} Index: {max_index}")
+weighted_similarity(cleanarray1,cleanarray2,array3)
 
 
 
