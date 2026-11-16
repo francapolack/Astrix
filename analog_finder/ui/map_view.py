@@ -45,16 +45,16 @@ def _encabezado(
 ) -> ft.Row:
     """Título, resumen y acción para volver a los resultados."""
     if cantidad == 1:
-        detalle_sitios = "1 sitio comparado"
+        detalle_sitios = "1 site compared"
     else:
-        detalle_sitios = f"{cantidad} sitios comparados"
+        detalle_sitios = f"{cantidad} sites compared"
 
     return ft.Row(
         controls=[
             ft.Column(
                 controls=[
                     ft.Text(
-                        "Mapa de análogos",
+                        "Analogue map",
                         size=TEXTO["titulo"],
                         weight=ft.FontWeight.W_700,
                         color=COLORES["texto"],
@@ -69,7 +69,7 @@ def _encabezado(
                 expand=True,
             ),
             ft.OutlinedButton(
-                content="Volver a resultados",
+                content="Go back to Results",
                 icon=ft.Icons.ARROW_BACK,
                 on_click=lambda _: al_volver(),
                 style=ft.ButtonStyle(
@@ -100,7 +100,7 @@ def _leyenda() -> ft.Row:
                         size=16,
                     ),
                     ft.Text(
-                        "Origen del mapa",
+                        "Map origin",
                         size=TEXTO["cuerpo"],
                         color=COLORES["texto_secundario"],
                     ),
@@ -116,7 +116,7 @@ def _leyenda() -> ft.Row:
                         size=16,
                     ),
                     ft.Text(
-                        "Sitios del ranking · tocá un marcador",
+                        "Sites of the ranking: Click on any marker",
                         size=TEXTO["cuerpo"],
                         color=COLORES["texto_secundario"],
                     ),
@@ -130,11 +130,6 @@ def _leyenda() -> ft.Row:
                         ft.Icons.SCIENCE,
                         color=COLORES["aviso"],
                         size=16,
-                    ),
-                    ft.Text(
-                        "Datos de ejemplo",
-                        size=TEXTO["cuerpo"],
-                        color=COLORES["aviso"],
                     ),
                 ],
                 spacing=ESPACIO["xs"],
@@ -170,9 +165,9 @@ def _aviso_tiles() -> ft.Container:
                     size=20,
                 ),
                 ft.Text(
-                    "No pudimos cargar las imágenes del mapa. Sin conexión o "
-                    "con el proveedor de tiles fuera de servicio, los "
-                    "marcadores siguen visibles sobre el fondo oscuro.",
+                    "We couldn't load the map. It may be a Internet issue or"
+                    "the tiles provider may be out of service, your "
+                    "markers are still visible on the dark background.",
                     size=TEXTO["cuerpo"],
                     color=COLORES["texto_secundario"],
                     expand=True,
@@ -281,7 +276,7 @@ def _tarjeta_detalle() -> tuple[ft.Container, dict[str, ft.Control]]:
         border=ft.Border.all(1, COLORES["aviso_borde"]),
         border_radius=RADIO["sm"],
         content=ft.Text(
-            "Origen del mapa",
+            "Map origin",
             size=TEXTO["cuerpo"],
             color=COLORES["aviso"],
         ),
@@ -372,21 +367,22 @@ def _estado_vacio(al_volver: Callable[[], None]) -> ft.Container:
                     size=48,
                 ),
                 ft.Text(
-                    "No hay sitios para ubicar en el mapa",
+                    "There are no sites to find on the map",
                     size=TEXTO["subtitulo"],
                     weight=ft.FontWeight.W_600,
                     color=COLORES["texto"],
                     text_align=ft.TextAlign.CENTER,
                 ),
                 ft.Text(
-                    "Volvé a los resultados y probá con otro destino u otros "
-                    "parámetros.",
+
+                    "Go back to the results and try with another destiny or other "
+                    "parameters.",
                     size=TEXTO["cuerpo"],
                     color=COLORES["texto_secundario"],
                     text_align=ft.TextAlign.CENTER,
                 ),
                 ft.OutlinedButton(
-                    content="Volver a resultados",
+                    content="Go back to results",
                     icon=ft.Icons.ARROW_BACK,
                     on_click=lambda _: al_volver(),
                     style=ft.ButtonStyle(

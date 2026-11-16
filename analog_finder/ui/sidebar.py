@@ -63,13 +63,13 @@ def _marca() -> ft.Row:
             ft.Column(
                 controls=[
                     ft.Text(
-                        "Analog Finder",
+                        "Astrix",
                         size=TEXTO["subtitulo"],
                         weight=ft.FontWeight.W_700,
                         color=COLORES["texto"],
                     ),
                     ft.Text(
-                        "Análogos planetarios",
+                        "DATA BEYOND SPACE",
                         size=TEXTO["cuerpo"],
                         color=COLORES["texto_tenue"],
                     ),
@@ -113,15 +113,16 @@ def _estado_vacio_historial() -> ft.Container:
                     size=32,
                 ),
                 ft.Text(
-                    "Todavía no hay búsquedas",
+                    "No searches made yet",
                     size=TEXTO["cuerpo_grande"],
                     weight=ft.FontWeight.W_600,
                     color=COLORES["texto"],
                     text_align=ft.TextAlign.CENTER,
                 ),
                 ft.Text(
-                    "Cuando busques un análogo, va a aparecer acá con su "
-                    "destino y sus categorías.",
+                    
+                    "When you look up an analogue, its going to show up here "
+                    "with its destiny and categories",
                     size=TEXTO["cuerpo"],
                     color=COLORES["texto_secundario"],
                     text_align=ft.TextAlign.CENTER,

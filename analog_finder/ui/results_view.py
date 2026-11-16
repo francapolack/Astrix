@@ -88,7 +88,7 @@ def _encabezado(
     if al_volver is not None:
         controles.append(
             ft.OutlinedButton(
-                content="Volver a buscar",
+                content="Search again",
                 icon=ft.Icons.ARROW_BACK,
                 on_click=lambda _: al_volver(),
                 style=ft.ButtonStyle(
@@ -237,26 +237,26 @@ def _contenido_desplegable(
     controles: list[ft.Control] = [
         ft.Divider(height=1, thickness=1, color=COLORES["borde_suave"]),
         _texto_de_apoyo(
-            "Qué es similar",
+            "How it matches",
             ft.Icons.LIGHTBULB_OUTLINE,
             COLORES["exito"],
             textos["similar"],
         ),
         _texto_de_apoyo(
-            "Dónde falla la analogía",
+            "How it may fail",
             ft.Icons.WARNING_AMBER_ROUNDED,
             COLORES["aviso"],
             textos["falla"],
         ),
         _texto_de_apoyo(
-            "Para qué sirve en una misión",
+            "How its useful",
             ft.Icons.ROCKET_LAUNCH_OUTLINED,
             COLORES["acento"],
             textos["mision"],
         ),
         ft.Divider(height=1, thickness=1, color=COLORES["borde_suave"]),
         ft.Text(
-            "Similitud por parámetro",
+            "Similarity per parameter",
             size=TEXTO["cuerpo_grande"],
             weight=ft.FontWeight.W_600,
             color=COLORES["texto"],
@@ -451,14 +451,14 @@ def construir_vista_resultados(
                         size=48,
                     ),
                     ft.Text(
-                        "No hay sitios para comparar",
+                        "There are no available sites for comparison",
                         size=TEXTO["subtitulo"],
                         weight=ft.FontWeight.W_600,
                         color=COLORES["texto"],
                         text_align=ft.TextAlign.CENTER,
                     ),
                     ft.Text(
-                        "Probá con otro destino u otros parámetros.",
+                        "Try with another site or parameters.",
                         size=TEXTO["cuerpo"],
                         color=COLORES["texto_secundario"],
                         text_align=ft.TextAlign.CENTER,
@@ -504,14 +504,14 @@ def construir_vista_cargando(destino: dict) -> ft.Container:
                     bgcolor=COLORES["superficie_alta"],
                 ),
                 ft.Text(
-                    "Calculando análogos",
+                    "Computing analogues",
                     size=TEXTO["subtitulo"],
                     weight=ft.FontWeight.W_600,
                     color=COLORES["texto"],
                     text_align=ft.TextAlign.CENTER,
                 ),
                 ft.Text(
-                    f"Comparando los sitios con {destino['nombre']}.",
+                    f"Comparing the sites with {destino['nombre']}.",
                     size=TEXTO["cuerpo"],
                     color=COLORES["texto_secundario"],
                     text_align=ft.TextAlign.CENTER,
@@ -535,7 +535,7 @@ def construir_vista_error(
             size=48,
         ),
         ft.Text(
-            "No pudimos calcular el ranking",
+            "We couldnt compute the ranking",
             size=TEXTO["subtitulo"],
             weight=ft.FontWeight.W_600,
             color=COLORES["texto"],
@@ -551,7 +551,7 @@ def construir_vista_error(
     if al_volver is not None:
         controles.append(
             ft.OutlinedButton(
-                content="Volver a buscar",
+                content="Search again",
                 icon=ft.Icons.ARROW_BACK,
                 on_click=lambda _: al_volver(),
                 style=ft.ButtonStyle(

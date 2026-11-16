@@ -50,7 +50,7 @@ def _encabezado() -> ft.Container:
                 ft.Column(
                     controls=[
                         ft.Text(
-                            "Nueva búsqueda",
+                            "New search",
                             size=TEXTO["titulo"],
                             weight=ft.FontWeight.W_700,
                             color=COLORES["texto"],
@@ -78,12 +78,6 @@ def _encabezado() -> ft.Container:
                                 ft.Icons.INFO_OUTLINE,
                                 color=COLORES["aviso"],
                                 size=16,
-                            ),
-                            ft.Text(
-                                "Datos de ejemplo",
-                                size=TEXTO["cuerpo"],
-                                weight=ft.FontWeight.W_600,
-                                color=COLORES["aviso"],
                             ),
                         ],
                         spacing=ESPACIO["xs"],

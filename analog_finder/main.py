@@ -84,7 +84,7 @@ def construir_pantalla(page: ft.Page) -> ft.Row:
     def al_ver_mapa(sitio: dict) -> None:
         """Abre el mapamundi con el sitio elegido como origen resaltado."""
         if not resultados_actuales or destino_actual is None:
-            _aviso(page, "No hay resultados para mostrar en el mapa.")
+            _aviso(page, "There are no results to show on the map.")
             return
         contenido.content = construir_vista_mapa(
             resultados_actuales,
