@@ -251,7 +251,48 @@ def test_datos_sitio_ausente_falla(monkeypatch):
 def test_extraer_sitio_objetivo_luna():
     objetivo = extraer_sitio_objetivo(RESPUESTA_V2, "luna")
     assert objetivo["nombre"] == "Malapert"
+    assert objetivo["similitud"] == pytest.approx(0.9)
+    assert objetivo["lat"] == pytest.approx(-86.6)
     assert CLAVE_OBJETIVO == {"luna": "luna_top1", "marte": "marte_top1"}
+
+
+def test_extraer_sitio_objetivo_normaliza_textos_numericos():
+    respuesta = {
+        "luna_top1": {
+            "sitio_id": "moon@-35.20,117.64±0.12",
+            "nombre": "Tyndall",
+            "lat": "-35.2",
+            "lon": "117.64",
+            "similitud": "0.9990796",
+            "similitudes": {
+                "global": "0.9990796",
+                "topografia": "0.9990796",
+                "termico": None,
+            },
+        }
+    }
+    objetivo = extraer_sitio_objetivo(respuesta, "luna")
+    assert objetivo["lat"] == pytest.approx(-35.2)
+    assert objetivo["similitud"] == pytest.approx(0.9990796)
+    assert objetivo["similitudes"]["topografia"] == pytest.approx(0.9990796)
+    assert objetivo["similitudes"]["termico"] is None
+
+
+def test_extraer_sitio_objetivo_similitud_nula_falla():
+    """Sin datos para el perfil, la nube devuelve una fila al azar con
+    similitud NULL: se rechaza con un mensaje honesto."""
+    respuesta = {
+        "luna_top1": {
+            "sitio_id": "moon@-12.02,97.09±0.06",
+            "nombre": "8 Homeward",
+            "lat": "-12.02",
+            "lon": "97.09",
+            "similitud": None,
+            "similitudes": {"global": None, "topografia": None},
+        }
+    }
+    with pytest.raises(ErrorNube, match="Luna registrado"):
+        extraer_sitio_objetivo(respuesta, "luna")
 
 
 def test_extraer_sitio_objetivo_vacio_falla():

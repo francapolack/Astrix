@@ -176,7 +176,12 @@ def datos_sitio(url: str, clave: str, sitio_id: str) -> dict:
 # ---------------------------------------------------------------------------
 
 def extraer_sitio_objetivo(respuesta: dict, destino_id: str) -> dict:
-    """Devuelve el sitio de Luna/Marte que encontró la nube."""
+    """Devuelve el sitio de Luna/Marte que encontró la nube, normalizado.
+
+    Si la nube devuelve una fila con similitud NULL significa que ningún
+    sitio registrado de ese cuerpo tiene datos para los parámetros del
+    perfil: se informa claro en vez de mostrar un lugar al azar.
+    """
     clave = CLAVE_OBJETIVO.get(destino_id)
     if clave is None:
         raise ErrorNube(f"El destino '{destino_id}' no es luna ni marte.")
@@ -186,6 +191,23 @@ def extraer_sitio_objetivo(respuesta: dict, destino_id: str) -> dict:
             "La nube no devolvió ningún sitio de "
             f"{destino_id} para este perfil."
         )
+    cuerpo = "Luna" if destino_id == "luna" else "Marte"
+    similitud = _numero(objetivo.get("similitud"))
+    if similitud is None:
+        raise ErrorNube(
+            f"Ningún sitio de {cuerpo} registrado en la base tiene datos "
+            "para los parámetros del perfil. Probá otros parámetros o "
+            "esperá a que la carga de fondo suba más sitios."
+        )
+    objetivo["similitud"] = similitud
+    objetivo["lat"] = _numero(objetivo.get("lat"))
+    objetivo["lon"] = _numero(objetivo.get("lon"))
+    desglose = objetivo.get("similitudes")
+    if isinstance(desglose, dict):
+        objetivo["similitudes"] = {
+            clave_interna: _numero(valor)
+            for clave_interna, valor in desglose.items()
+        }
     return objetivo
 
 
@@ -250,10 +272,22 @@ def textos_del_desglose(
 
 
 def _numero(valor) -> float | None:
-    """Convierte a float lo que sea número real; lo demás queda None."""
-    if isinstance(valor, bool) or not isinstance(valor, (int, float)):
+    """Convierte a float lo que sea número (o texto numérico).
+
+    El RPC devuelve lat/lon como TEXTO (`d->>'lat'`); se tolera aquí para
+    no depender de un cambio en el SQL. Lo que no sea convertible queda
+    None (sin dato), nunca un número inventado.
+    """
+    if isinstance(valor, bool):
         return None
-    return float(valor)
+    if isinstance(valor, (int, float)):
+        return float(valor)
+    if isinstance(valor, str):
+        try:
+            return float(valor.strip())
+        except ValueError:
+            return None
+    return None
 
 
 def adaptar_sitio_nube(

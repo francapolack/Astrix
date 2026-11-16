@@ -355,6 +355,16 @@ Supabase. La similitud se calcula en la nube; el front solo dibuja.
       guarda los valores reales elegidos (`entrada["valores"]`).
 - [x] `python -m pytest -q`: 132 pruebas aprobadas (24 nuevas de nube,
       con HTTP simulado).
+- [x] Robustez contra la DB real (sesión del 15/11): el RPC devuelve
+      lat/lon como TEXTO (`d->>'lat'`) y filas con similitud NULL cuando
+      ningún sitio registrado tiene los parámetros del perfil. El front
+      normaliza números de texto, rechaza la fila sin dato con un
+      mensaje honesto ("ningún sitio de Luna registrado tiene datos
+      para estos parámetros") y ejecuta el HTTP en un hilo aparte con
+      captura amplia de errores (antes, un TypeError mataba la tarea en
+      silencio y la pantalla de carga quedaba colgada). Verificado en
+      vivo: elevación −1000 → Tyndall (99.9 %, elevación real −1018 m)
+      + 5 análogos terrestres.
 - [ ] Verificación visual de la app en ejecución (pendiente del equipo).
 - [ ] Probar contra la DB real: falta copiar el `.env` a la raíz del repo.
 - [ ] `data/historial.json` viejo: entradas sin `valores` avisan y no se

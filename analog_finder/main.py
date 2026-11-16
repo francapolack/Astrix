@@ -15,7 +15,6 @@ import flet as ft
 
 from core.logic import ResultadoNube
 from core.nube import (
-    ErrorNube,
     adaptar_sitio_nube,
     buscar_analogos,
     cargar_credenciales,
@@ -139,10 +138,18 @@ def construir_pantalla(page: ft.Page) -> ft.Row:
         try:
             perfil = construir_perfil(categorias, seleccion)
             url, clave = cargar_credenciales()
-            respuesta = buscar_analogos(url, clave, perfil)
+            # HTTP en un hilo aparte: la UI no se congela mientras llega
+            # la respuesta (la función es bloqueante por naturaleza).
+            respuesta = await asyncio.to_thread(
+                buscar_analogos, url, clave, perfil
+            )
             objetivo = extraer_sitio_objetivo(respuesta, destino_id)
-            datos = datos_sitio(url, clave, objetivo["sitio_id"])
-        except (ErrorNube, ValueError) as error:
+            datos = await asyncio.to_thread(
+                datos_sitio, url, clave, objetivo["sitio_id"]
+            )
+        except Exception as error:
+            # Se muestra el error real y el traceback queda en consola;
+            # nunca se queda la pantalla de carga colgada.
             mostrar_error(str(error))
             return
 
@@ -176,7 +183,7 @@ def construir_pantalla(page: ft.Page) -> ft.Row:
             resultados = [
                 adaptar_sitio_nube(fila, categorias) for fila in analogos
             ]
-        except (ErrorNube, ValueError) as error:
+        except Exception as error:
             mostrar_error(str(error))
             return
 
