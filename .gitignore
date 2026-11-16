@@ -1,0 +1,28 @@
+# Datos descargados (GeoTIFF, CSV del GDS, teselas...) — SOLO la caché del
+# colector en la raíz. Ojo: sin "/" inicial ignoraría también analog_finder/data/,
+# que contiene los JSON del catálogo del front y DEBE versionarse.
+/data/
+
+# Credenciales
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+.venv-*/
+venv/
+
+# Flet (front)
+.flet/
+
+# Datos locales del usuario (historial de búsquedas del front)
+analog_finder/data/historial.json
+
+# Artefactos de exploración
+*.html
+*.tmp
+.pytest_cache/

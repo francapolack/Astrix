@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nsac"
+version = "0.1.0"
+description = "Acceso a las fuentes de datos del reto Space Apps 2026: análogos terrestres de bases lunares y marcianas"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+    "requests>=2.31",
+    "pandas>=2.0",
+]
+
+[project.optional-dependencies]
+geo = [
+    "rasterio>=1.3",
+    "rioxarray>=0.15",
+    "pystac-client>=0.8",
+]
+viz = [
+    "matplotlib>=3.8",
+    "folium>=0.16",
+]
+auth = [
+    "earthaccess>=0.13",
+    "python-dotenv>=1.0",
+]
+
+[project.scripts]
+nsac = "nsac.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["nsac*"]
