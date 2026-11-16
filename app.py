@@ -48,9 +48,11 @@ def weighted_similarity(raw_array_a,raw_array_b,weights):
     matches=1/(1+distance)
     max_index=None
     max_match=max(matches)
+    max_value=array_b[0][0]
     for i in range(0,len(array_b)):
         for j in range(0,len(array_b[0])):
-            if array_b[i][j]==max_match:
+            if array_b[i][j]>max_value:
+                max_value=array_b[i][j]
                 max_index=i
     return print(f"Valor de la mayor Similitud Ponderada:{max_match} Index: {max_index}")
 weighted_similarity(cleanarray1,cleanarray2,array3)

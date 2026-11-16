@@ -18,7 +18,7 @@ aca pongan imagenes del codigo
 **Alma Tolosa**
 <br>
 *@TolosaAlma*
-<br>aca pongan d lo q se encargaron ns
+<br>
 <br>
 **Facundo Roda**
 <br>
