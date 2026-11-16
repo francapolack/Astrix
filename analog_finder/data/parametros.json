@@ -50,6 +50,14 @@
         "unidad": "K",
         "min": 0.0,
         "max": 250.0
+      },
+      {
+        "id": "variacion_estacional",
+        "nombre": "Variación estacional",
+        "clave_db": "variacion_estacional_k",
+        "unidad": "K",
+        "min": 0.0,
+        "max": 250.0
       }
     ]
   },

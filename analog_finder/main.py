@@ -17,11 +17,13 @@ from core.logic import ResultadoNube
 from core.nube import (
     adaptar_sitio_nube,
     buscar_analogos,
+    buscar_analogos_cuerpo,
+    campos_de_datos,
     cargar_credenciales,
     construir_perfil,
     datos_sitio,
-    extraer_analogos_tierra,
     extraer_sitio_objetivo,
+    perfil_desde_datos,
 )
 from core.repository import (
     ErrorDatos,
@@ -79,8 +81,9 @@ def construir_pantalla(page: ft.Page) -> ft.Row:
     resultados_actuales: list[ResultadoNube] = []
     destino_actual: dict | None = None
     vista_resultados: ft.Container | None = None
-    # Respuesta de la nube pendiente de pasar a resultados, y su selección.
-    respuesta_pendiente: dict | None = None
+    # Filas de Tierra (buscadas con el perfil COMPLETO del sitio objetivo)
+    # y la selección del usuario, pendientes de pasar a resultados.
+    filas_tierra_pendiente: list[dict] | None = None
     seleccion_pendiente: dict[str, float] = {}
     guardar_pendiente = False
 
@@ -119,9 +122,9 @@ def construir_pantalla(page: ft.Page) -> ft.Row:
         contenido.update()
 
     async def calcular(destino_id: str, seleccion: dict[str, float]) -> None:
-        """Consulta la nube: perfil → sitio objetivo → pantalla previa."""
+        """Consulta la nube: perfil del usuario → sitio objetivo → datos."""
         nonlocal historial, error_historial
-        nonlocal respuesta_pendiente, seleccion_pendiente
+        nonlocal filas_tierra_pendiente, seleccion_pendiente
         destino = next(
             (item for item in DESTINOS if item["id"] == destino_id),
             None,
@@ -147,13 +150,25 @@ def construir_pantalla(page: ft.Page) -> ft.Row:
             datos = await asyncio.to_thread(
                 datos_sitio, url, clave, objetivo["sitio_id"]
             )
+            # El sitio completo manda: los análogos terrestres se buscan
+            # con TODOS sus campos con valor (más precisión que el
+            # perfil inicial del usuario).
+            perfil_completo = perfil_desde_datos(datos)
+            filas_tierra = await asyncio.to_thread(
+                buscar_analogos_cuerpo,
+                url,
+                clave,
+                perfil_completo,
+                "tierra",
+                5,
+            )
         except Exception as error:
             # Se muestra el error real y el traceback queda en consola;
             # nunca se queda la pantalla de carga colgada.
             mostrar_error(str(error))
             return
 
-        respuesta_pendiente = respuesta
+        filas_tierra_pendiente = filas_tierra
         seleccion_pendiente = dict(seleccion)
 
         contenido.content = construir_vista_objetivo(
@@ -164,24 +179,44 @@ def construir_pantalla(page: ft.Page) -> ft.Row:
             seleccion,
             AVISO_DATOS_REALES,
             al_volver=mostrar_busqueda,
-            al_continuar=ir_a_resultados,
+            al_continuar=lambda: page.run_task(ir_a_resultados),
         )
         contenido.update()
 
-    def ir_a_resultados() -> None:
+    async def ir_a_resultados() -> None:
         """Pasa de la pantalla del sitio objetivo a los análogos terrestres."""
         nonlocal historial, error_historial
-        nonlocal resultados_actuales, destino_actual, vista_resultados
+        nonlocal resultados_actuales, vista_resultados
         nonlocal guardar_pendiente
-        if respuesta_pendiente is None:
+        if filas_tierra_pendiente is None:
             mostrar_busqueda()
             return
         destino = destino_actual or DESTINOS[0]
 
         try:
-            analogos = extraer_analogos_tierra(respuesta_pendiente)
+            url, clave = cargar_credenciales()
+            # Por cada análogo se traen sus 9 campos con valor para
+            # mostrarlos en la tarjeta desplegable.
+            datos_por_sitio = await asyncio.gather(
+                *[
+                    asyncio.to_thread(
+                        datos_sitio,
+                        url,
+                        clave,
+                        fila.get("sitio_id"),
+                    )
+                    for fila in filas_tierra_pendiente
+                ]
+            )
             resultados = [
-                adaptar_sitio_nube(fila, categorias) for fila in analogos
+                adaptar_sitio_nube(
+                    fila,
+                    categorias,
+                    campos=campos_de_datos(datos),
+                )
+                for fila, datos in zip(
+                    filas_tierra_pendiente, datos_por_sitio
+                )
             ]
         except Exception as error:
             mostrar_error(str(error))

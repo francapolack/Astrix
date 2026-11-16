@@ -19,6 +19,21 @@ from core.logic import ResultadoNube
 # Claves del RPC buscar_analogos_v2 por cuerpo elegido.
 CLAVE_OBJETIVO = {"luna": "luna_top1", "marte": "marte_top1"}
 
+# Los 9 campos de datos de un sitio (tabla sitios_candidatos). Se muestran
+# SIEMPRE con su valor o con "sin dato": nunca se inventan. Los nombres y
+# unidades son del contrato del proyecto (ver colector_datos/api.py).
+CAMPOS_DATOS = (
+    ("elevacion_media_m", "Elevación media", "m"),
+    ("pendiente_media_grados", "Pendiente media", "°"),
+    ("rugosidad_media_m", "Rugosidad media", "m"),
+    ("temperatura_media_k", "Temperatura media", "K"),
+    ("diferencia_dia_noche_k", "Diferencia día/noche", "K"),
+    ("variacion_estacional_k", "Variación estacional", "K"),
+    ("reflectancia_media", "Reflectancia (albedo)", "fracción"),
+    ("energia_solar_media_wm2", "Energía solar media", "W/m²"),
+    ("fraccion_diurna", "Fracción diurna", "fracción"),
+)
+
 RUTA_ENV = Path(__file__).resolve().parents[2] / ".env"
 
 
@@ -149,6 +164,38 @@ def buscar_analogos(url: str, clave: str, perfil: dict) -> dict:
     return datos
 
 
+def buscar_analogos_cuerpo(
+    url: str,
+    clave: str,
+    perfil: dict,
+    cuerpo: str,
+    topn: int = 5,
+) -> list[dict]:
+    """Llama al RPC buscar_analogo_cuerpo: Top N de SOLO ese cuerpo."""
+    try:
+        respuesta = requests.post(
+            f"{url}/rest/v1/rpc/buscar_analogo_cuerpo",
+            headers=_encabezados(clave),
+            json={
+                "parametros": {"perfil": perfil},
+                "cuerpo": cuerpo,
+                "topn": topn,
+            },
+            timeout=30,
+        )
+    except requests.RequestException as error:
+        raise ErrorNube(f"No se pudo conectar con la nube: {error}") from error
+    if respuesta.status_code != 200:
+        raise ErrorNube(
+            "La nube respondió "
+            f"{respuesta.status_code}: {respuesta.text[:300]}"
+        )
+    datos = respuesta.json()
+    if not isinstance(datos, dict) or "resultados" not in datos:
+        raise ErrorNube("La respuesta del cuerpo no trae resultados.")
+    return datos["resultados"]
+
+
 def datos_sitio(url: str, clave: str, sitio_id: str) -> dict:
     """Trae la fila cruda de un sitio desde la tabla sitios_candidatos."""
     try:
@@ -219,6 +266,39 @@ def extraer_analogos_tierra(respuesta: dict) -> list[dict]:
     if not isinstance(analogos, list):
         raise ErrorNube("Los análogos de la Tierra no llegaron como lista.")
     return analogos
+
+
+def campos_de_datos(datos: dict) -> dict[str, float | None]:
+    """Extrae los 9 campos de datos de una fila cruda (o None si no hay).
+
+    La fila que devuelve datos_sitio trae además lat, lon, fechas y
+    contadores: aquí quedan SOLO los campos de datos del contrato.
+    """
+    return {
+        clave: _numero(datos.get(clave))
+        for clave, _nombre, _unidad in CAMPOS_DATOS
+    }
+
+
+def perfil_desde_datos(datos: dict) -> dict:
+    """Perfil completo a partir de los 9 campos de un sitio real.
+
+    Toma TODOS los campos con valor no nulo (puede ser menos de 9 si la
+    fuente no dio alguno; regla del proyecto: nunca inventar). Se usa
+    para buscar análogos terrestres del sitio de Luna/Marte encontrado,
+    con mucha más precisión que el perfil inicial del usuario.
+    """
+    perfil: dict[str, dict[str, float]] = {}
+    for clave, _nombre, _unidad in CAMPOS_DATOS:
+        valor = _numero(datos.get(clave))
+        if valor is not None:
+            perfil[clave] = {"valor": valor, "peso": 1.0}
+    if not perfil:
+        raise ErrorNube(
+            "El sitio encontrado no tiene ningún campo de datos para "
+            "buscar análogos."
+        )
+    return perfil
 
 
 def textos_del_desglose(
@@ -293,6 +373,7 @@ def _numero(valor) -> float | None:
 def adaptar_sitio_nube(
     fila: dict,
     categorias: list[dict],
+    campos: dict[str, float | None] | None = None,
 ) -> "ResultadoNube":
     """Convierte una fila del RPC en un ResultadoNube listo para la vista.
 
@@ -321,6 +402,7 @@ def adaptar_sitio_nube(
         "tipo": fila.get("tipo") or "",
         "lat": _numero(fila.get("lat")),
         "lon": _numero(fila.get("lon")),
+        "campos": campos or {},
         "textos": textos_del_desglose(desglose, categorias, fila.get("tipo")),
         "es_ejemplo": False,
     }

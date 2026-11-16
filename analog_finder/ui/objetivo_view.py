@@ -10,6 +10,7 @@ from collections.abc import Callable
 
 import flet as ft
 
+from core.nube import CAMPOS_DATOS, campos_de_datos
 from ui.theme import COLORES, ESPACIO, RADIO, TEXTO
 
 
@@ -97,13 +98,18 @@ def _barra_categoria(nombre: str, puntaje: float) -> ft.Column:
     )
 
 
-def _fila_valor(
+def _fila_campo(
     nombre: str,
     valor_sitio: float | None,
     unidad: str,
-    valor_objetivo: float,
+    valor_objetivo: float | None = None,
 ) -> ft.Row:
-    """Una fila de la tabla de valores: sitio vs. objetivo del usuario."""
+    """Una fila de la tabla de los 9 campos: sitio vs. objetivo pedido."""
+    detalle = _formatear_valor(valor_sitio, unidad)
+    if valor_objetivo is not None:
+        detalle += "  (objetivo: " + _formatear_valor(
+            valor_objetivo, unidad
+        ) + ")"
     return ft.Row(
         controls=[
             ft.Text(
@@ -113,7 +119,7 @@ def _fila_valor(
                 width=180,
             ),
             ft.Text(
-                _formatear_valor(valor_sitio, unidad),
+                detalle,
                 size=TEXTO["cuerpo"],
                 weight=ft.FontWeight.W_600,
                 color=(
@@ -122,11 +128,6 @@ def _fila_valor(
                     else COLORES["aviso"]
                 ),
                 expand=True,
-            ),
-            ft.Text(
-                "objetivo: " + _formatear_valor(valor_objetivo, unidad),
-                size=TEXTO["cuerpo"],
-                color=COLORES["texto_secundario"],
             ),
         ],
         spacing=ESPACIO["sm"],
@@ -206,17 +207,24 @@ def construir_vista_objetivo(
         if isinstance(puntaje, (int, float)):
             barras.append(_barra_categoria(categoria["nombre"], float(puntaje)))
 
-    filas_valores: list[ft.Control] = []
-    for parametro_id, valor_objetivo in seleccion.items():
-        parametro = indice[parametro_id]
-        filas_valores.append(
-            _fila_valor(
-                parametro["nombre"],
-                datos.get(parametro["clave_db"]),
-                parametro.get("unidad", ""),
-                float(valor_objetivo),
-            )
+    # La tabla SIEMPRE muestra los 9 campos del contrato; en los que el
+    # usuario pidió, se agrega entre paréntesis el objetivo elegido.
+    campos = campos_de_datos(datos)
+    unidades = {clave: unidad for clave, _n, unidad in CAMPOS_DATOS}
+    objetivos_por_clave = {
+        indice[parametro_id]["clave_db"]: float(valor)
+        for parametro_id, valor in seleccion.items()
+        if parametro_id in indice
+    }
+    filas_campos: list[ft.Control] = [
+        _fila_campo(
+            nombre,
+            campos.get(clave_db),
+            unidades.get(clave_db, ""),
+            objetivos_por_clave.get(clave_db),
         )
+        for clave_db, nombre, _unidad in CAMPOS_DATOS
+    ]
 
     contenido = ft.Column(
         controls=[
@@ -253,12 +261,19 @@ def construir_vista_objetivo(
                 content=ft.Column(
                     controls=[
                         ft.Text(
-                            "Valores del sitio frente a tu objetivo",
+                            "Datos del sitio (los 9 campos del catálogo)",
                             size=TEXTO["cuerpo_grande"],
                             weight=ft.FontWeight.W_600,
                             color=COLORES["texto"],
                         ),
-                        *filas_valores,
+                        *filas_campos,
+                        ft.Text(
+                            "Los análogos terrestres se buscan con TODOS "
+                            "los campos con valor de este sitio, no solo "
+                            "con los que pediste.",
+                            size=TEXTO["cuerpo"],
+                            color=COLORES["texto_tenue"],
+                        ),
                         ft.Text(
                             "El mapa interactivo solo cubre la Tierra "
                             "(los tiles son de OpenStreetMap).",

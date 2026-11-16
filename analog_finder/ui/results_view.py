@@ -11,12 +11,22 @@ from collections.abc import Callable
 import flet as ft
 
 from core.logic import ResultadoAnalogo, ResultadoNube
+from core.nube import CAMPOS_DATOS
 from ui.theme import COLORES, ESPACIO, RADIO, TEXTO
 
 
 def _porcentaje(valor: float) -> int:
     """Convierte un puntaje normalizado en un porcentaje entero visible."""
     return round(valor * 100)
+
+
+def _formatear_valor(valor: float | None, unidad: str) -> str:
+    """Texto del valor crudo con su unidad; None es honesto: sin dato."""
+    if valor is None:
+        return "sin dato en esta consulta"
+    if unidad == "fracción":
+        return f"{valor:.2f} frac."
+    return f"{valor:g} {unidad}".strip()
 
 
 def _subtitulo_sitio(sitio: dict) -> str:
@@ -258,6 +268,47 @@ def _grupos_de_parametros(
     return grupos
 
 
+def _filas_campos_sitio(sitio: dict) -> list[ft.Control]:
+    """Tabla con los 9 campos de datos del sitio (vacía si no hay).
+
+    Los valores crudos viajan dentro del resultado (sitio["campos"]);
+    la vista solo los presenta con su unidad.
+    """
+    campos = sitio.get("campos")
+    if not isinstance(campos, dict) or not campos:
+        return []
+    filas: list[ft.Control] = []
+    for clave_db, nombre, unidad in CAMPOS_DATOS:
+        valor = campos.get(clave_db)
+        tiene_dato = valor is not None
+        filas.append(
+            ft.Row(
+                controls=[
+                    ft.Text(
+                        nombre,
+                        size=TEXTO["cuerpo"],
+                        color=COLORES["texto"],
+                        width=180,
+                    ),
+                    ft.Text(
+                        _formatear_valor(valor, unidad),
+                        size=TEXTO["cuerpo"],
+                        weight=ft.FontWeight.W_600,
+                        color=(
+                            COLORES["texto"]
+                            if tiene_dato
+                            else COLORES["aviso"]
+                        ),
+                        expand=True,
+                    ),
+                ],
+                spacing=ESPACIO["xs"],
+                vertical_alignment=ft.CrossAxisAlignment.CENTER,
+            )
+        )
+    return filas
+
+
 def _contenido_desplegable(
     resultado: ResultadoAnalogo | ResultadoNube,
     categorias: list[dict],
@@ -302,6 +353,20 @@ def _contenido_desplegable(
         ),
         *grupos,
     ]
+    filas_campos = _filas_campos_sitio(resultado.sitio)
+    if filas_campos:
+        controles.extend(
+            [
+                ft.Divider(height=1, thickness=1, color=COLORES["borde_suave"]),
+                ft.Text(
+                    "Datos del sitio (los 9 campos del catálogo)",
+                    size=TEXTO["cuerpo_grande"],
+                    weight=ft.FontWeight.W_600,
+                    color=COLORES["texto"],
+                ),
+                *filas_campos,
+            ]
+        )
     if al_ver_mapa is not None:
         controles.append(
             ft.OutlinedButton(

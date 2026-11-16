@@ -13,7 +13,8 @@
       "amplitud_termica": 0.95,
       "horas_luz": 0.35,
       "reflectancia": 0.4,
-      "energia_solar": 0.5
+      "energia_solar": 0.5,
+      "variacion_estacional": 0.35
     }
   },
   {
@@ -30,7 +31,8 @@
       "amplitud_termica": 0.75,
       "horas_luz": 0.5,
       "reflectancia": 0.4,
-      "energia_solar": 0.5
+      "energia_solar": 0.5,
+      "variacion_estacional": 0.35
     }
   }
 ]

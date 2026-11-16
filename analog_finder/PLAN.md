@@ -365,6 +365,14 @@ Supabase. La similitud se calcula en la nube; el front solo dibuja.
       silencio y la pantalla de carga quedaba colgada). Verificado en
       vivo: elevación −1000 → Tyndall (99.9 %, elevación real −1018 m)
       + 5 análogos terrestres.
+- [x] Datos completos del sitio (segunda parte del hito, 15/11): la
+      pantalla del sitio objetivo muestra SIEMPRE los 9 campos del
+      contrato (valor o "sin dato"); en los pedidos por el usuario suma
+      el objetivo elegido. Los análogos terrestres se buscan con el
+      PERFIL COMPLETO del sitio de Luna/Marte encontrado (los campos con
+      valor que la base trae, vía `perfil_desde_datos` + RPC
+      `buscar_analogo_cuerpo`), no solo con los parámetros pedidos, y
+      cada tarjeta de resultado despliega los 9 campos con sus valores.
 - [ ] Verificación visual de la app en ejecución (pendiente del equipo).
 - [ ] Probar contra la DB real: falta copiar el `.env` a la raíz del repo.
 - [ ] `data/historial.json` viejo: entradas sin `valores` avisan y no se

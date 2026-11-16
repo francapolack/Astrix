@@ -11,15 +11,18 @@ import pytest
 import requests
 
 from core.nube import (
+    CAMPOS_DATOS,
     CLAVE_OBJETIVO,
     ErrorNube,
     adaptar_sitio_nube,
     buscar_analogos,
+    campos_de_datos,
     cargar_credenciales,
     construir_perfil,
     datos_sitio,
     extraer_analogos_tierra,
     extraer_sitio_objetivo,
+    perfil_desde_datos,
     textos_del_desglose,
 )
 from core.repository import cargar_categorias
@@ -354,3 +357,52 @@ def test_adaptar_sitio_nube():
     assert "iluminacion" not in resultado.puntajes
     assert resultado.sitio["textos"]["similar"]
     assert resultado.sitio["es_ejemplo"] is False
+
+
+# ---------------------------------------------------------------------------
+# Los 9 campos de datos y el perfil completo del sitio
+# ---------------------------------------------------------------------------
+
+def test_campos_de_datos_extrae_los_nueve():
+    fila = dict.fromkeys(clave for clave, _n, _u in CAMPOS_DATOS)
+    fila.update(
+        {
+            "elevacion_media_m": -1018.408,
+            "pendiente_media_grados": "3.7",
+            "temperatura_media_k": None,
+            "lat": -35.2,       # fuera del contrato: no debe aparecer
+            "n_puntos_lola": 129600,
+        }
+    )
+    campos = campos_de_datos(fila)
+    assert len(campos) == 9
+    assert campos["elevacion_media_m"] == pytest.approx(-1018.408)
+    assert campos["pendiente_media_grados"] == pytest.approx(3.7)
+    assert campos["temperatura_media_k"] is None
+    assert "lat" not in campos
+    assert "n_puntos_lola" not in campos
+
+
+def test_perfil_desde_datos_usa_solo_lo_que_hay():
+    fila = {
+        "elevacion_media_m": -1018.408,
+        "pendiente_media_grados": "3.7",
+        "rugosidad_media_m": None,
+        "temperatura_media_k": 230.5,
+        "n_puntos_lola": 999,
+    }
+    perfil = perfil_desde_datos(fila)
+    assert set(perfil) == {
+        "elevacion_media_m",
+        "pendiente_media_grados",
+        "temperatura_media_k",
+    }
+    assert perfil["pendiente_media_grados"] == {
+        "valor": 3.7,
+        "peso": 1.0,
+    }
+
+
+def test_perfil_desde_datos_sin_nada_falla():
+    with pytest.raises(ErrorNube, match="ningún campo de datos"):
+        perfil_desde_datos({"n_puntos_lola": 999})

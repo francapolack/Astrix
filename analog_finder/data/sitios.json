@@ -14,7 +14,8 @@
       "amplitud_termica": 0.6,
       "horas_luz": 0.85,
       "reflectancia": 0.4,
-      "energia_solar": 0.5
+      "energia_solar": 0.5,
+      "variacion_estacional": 0.35
     },
     "textos": {
       "similar": "Extensión árida, cielo despejado y suelos secos con poca vegetación se parecen a la superficie lunar y marciana.",
@@ -37,7 +38,8 @@
       "amplitud_termica": 0.55,
       "horas_luz": 0.4,
       "reflectancia": 0.4,
-      "energia_solar": 0.5
+      "energia_solar": 0.5,
+      "variacion_estacional": 0.35
     },
     "textos": {
       "similar": "Frío extremo, escasa humedad y suelos minerales expuestos recuerdan a los paisajes polares de la Luna y Marte.",
@@ -60,7 +62,8 @@
       "amplitud_termica": 0.7,
       "horas_luz": 0.35,
       "reflectancia": 0.4,
-      "energia_solar": 0.5
+      "energia_solar": 0.5,
+      "variacion_estacional": 0.35
     },
     "textos": {
       "similar": "Es un desierto polar con un cráter de impacto bien conservado y muy poca cobertura vegetal.",
@@ -83,7 +86,8 @@
       "amplitud_termica": 0.5,
       "horas_luz": 0.8,
       "reflectancia": 0.4,
-      "energia_solar": 0.5
+      "energia_solar": 0.5,
+      "variacion_estacional": 0.35
     },
     "textos": {
       "similar": "Sus minerales de hierro y su química ácida se usan como análogo de ambientes marcianos ricos en óxidos.",
@@ -106,7 +110,8 @@
       "amplitud_termica": 0.35,
       "horas_luz": 0.85,
       "reflectancia": 0.4,
-      "energia_solar": 0.5
+      "energia_solar": 0.5,
+      "variacion_estacional": 0.35
     },
     "textos": {
       "similar": "Lavas basálticas recientes, conos y cenizas ofrecen un paisaje volcánico parecido al de Marte.",
@@ -129,7 +134,8 @@
       "amplitud_termica": 0.2,
       "horas_luz": 0.9,
       "reflectancia": 0.4,
-      "energia_solar": 0.5
+      "energia_solar": 0.5,
+      "variacion_estacional": 0.35
     },
     "textos": {
       "similar": "El basalto activo y los flujos de lava reproducen la geología ígnea que se espera encontrar en Marte.",
@@ -152,7 +158,8 @@
       "amplitud_termica": 0.8,
       "horas_luz": 0.9,
       "reflectancia": 0.4,
-      "energia_solar": 0.5
+      "energia_solar": 0.5,
+      "variacion_estacional": 0.35
     },
     "textos": {
       "similar": "Calor extremo, dunas y costras de sal crean un ambiente desértico con muy poca agua disponible.",
@@ -175,7 +182,8 @@
       "amplitud_termica": 0.7,
       "horas_luz": 0.85,
       "reflectancia": 0.4,
-      "energia_solar": 0.5
+      "energia_solar": 0.5,
+      "variacion_estacional": 0.35
     },
     "textos": {
       "similar": "Su superficie plana y brillante simplifica la navegación y las pruebas de movilidad, como en llanuras de Marte.",
@@ -198,7 +206,8 @@
       "amplitud_termica": 0.6,
       "horas_luz": 0.9,
       "reflectancia": 0.4,
-      "energia_solar": 0.5
+      "energia_solar": 0.5,
+      "variacion_estacional": 0.35
     },
     "textos": {
       "similar": "Suelos secos, rocas expuestas y polvo fino permiten ensayar operaciones de superficie similares a Marte.",
@@ -221,7 +230,8 @@
       "amplitud_termica": 0.6,
       "horas_luz": 0.3,
       "reflectancia": 0.4,
-      "energia_solar": 0.5
+      "energia_solar": 0.5,
+      "variacion_estacional": 0.35
     },
     "textos": {
       "similar": "La luz rasante, el frío y los valles glaciares se parecen a las condiciones polares lunares.",
@@ -244,7 +254,8 @@
       "amplitud_termica": 0.75,
       "horas_luz": 0.25,
       "reflectancia": 0.4,
-      "energia_solar": 0.5
+      "energia_solar": 0.5,
+      "variacion_estacional": 0.35
     },
     "textos": {
       "similar": "Depósitos de yeso y suelos fríos y secos se consideran análogos de minerales hallados en Marte.",
@@ -267,7 +278,8 @@
       "amplitud_termica": 0.55,
       "horas_luz": 0.9,
       "reflectancia": 0.4,
-      "energia_solar": 0.5
+      "energia_solar": 0.5,
+      "variacion_estacional": 0.35
     },
     "textos": {
       "similar": "Rocas muy antiguas y suelos ferruginosos permiten estudiar procesos geológicos comparables a los de Marte.",
