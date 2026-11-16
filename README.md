@@ -4,14 +4,9 @@
 Welcome to Astrix! This is BK2s submission for the Nasa Space Apps 2026
 ## How Astrix works
 Astrix is a dashboard system which presents analog locations to a user via data processing. 
-When the user first enters the app:
-aca pongan imagenes de la app
-When the user enters the parameters:
-aca pongan imagenes de la app
 How Astrix processes the data:
 1) Calls NASAs APIs
-aca pongan imagenes del codigo
-2) Processes it (cleaning,)
+2) Processes it (cleaning,comparing it with other arrays)
 3) Filters it
 4) Shows all the data in the dashboard
 ## Credits: The BK2s Team
@@ -24,16 +19,21 @@ aca pongan imagenes del codigo
 <br>
 *@AxelRoda202*
 <br>
+<br>
 **Franca Polack**
 <br>
 *@francapolack*
+<br>
 <br>
 **Matias Gil**
 <br>
 *@escudero819*
 <br>
+<br>
 **Romina Arias**
 *@AriasRominaFlorencia*
 <br>
+<br>
 **Sofia Grillo**
+<br>
 *@sofigrillo16-lec*
