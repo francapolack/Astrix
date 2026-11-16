@@ -1,0 +1,583 @@
+{
+  "_descripcion": "Registro de consultas de obtener_datos_sitio() — NSAC. Clave = cuerpo@lat,lon±radio; 'resumen' son los números con unidad y 'datos_completos' el dict entero.",
+  "moon@-89.9,0.05±0.05": {
+    "fecha_consulta": "2026-11-15T22:46:03",
+    "resumen": {
+      "via_topografia": "lola_gds"
+    },
+    "datos_completos": {
+      "metadatos": {
+        "cuerpo": "moon",
+        "lat": -89.9,
+        "lon": 0.05,
+        "radio_grados": 0.05,
+        "consulta": "2026-11-15T22:46:03",
+        "fuentes": [
+          "Treks (490 capas, proyección polar)",
+          "USGS STAC (DTM)",
+          "DTM Kaguya DESCARTADO (el trozo leído casi no tiene píxeles válidos)",
+          "PDS Search (Clementine)"
+        ]
+      },
+      "topografia": {
+        "fuente": "LOLA (GDS) + DTM Kaguya (USGS STAC) + Treks",
+        "via": "lola_gds",
+        "elevacion_m": "sin datos (usar_gds=False?)",
+        "dtm_descargables": [
+          {
+            "id": "TC2W2B0_01_01141S894E2637__TC1W2B0_01_01141S894E0156",
+            "bbox": [
+              -180,
+              -90,
+              180,
+              -89.76013049090237
+            ],
+            "fecha": "2024-01-01T00:00:00Z",
+            "url_mejor_asset": "https://astrogeo-ard.s3-us-west-2.amazonaws.com/moon/kaguya/terrain_camera/usgs_dtms_v2/TC2W2B0_01_01141S894E2637__TC1W2B0_01_01141S894E0156/TC2W2B0_01_01141S894E2637__TC1W2B0_01_01141S894E0156-DEM.tif"
+          },
+          {
+            "id": "TC2W2B0_01_01082S894E0520__TC1W2B0_01_01082S894E0159",
+            "bbox": [
+              -16.041619274743248,
+              -89.94035904506873,
+              99.71444987291642,
+              -89.42673492691512
+            ],
+            "fecha": "2024-01-01T00:00:00Z",
+            "url_mejor_asset": "https://astrogeo-ard.s3-us-west-2.amazonaws.com/moon/kaguya/terrain_camera/usgs_dtms_v2/TC2W2B0_01_01082S894E0520__TC1W2B0_01_01082S894E0159/TC2W2B0_01_01082S894E0520__TC1W2B0_01_01082S894E0159-DEM.tif"
+          },
+          {
+            "id": "TC2W2B0_01_01081S894E0520__TC1W2B0_01_01081S894E0145",
+            "bbox": [
+              -92.59147927613607,
+              -89.90299423134812,
+              80.03316987425382,
+              -89.58602994738713
+            ],
+            "fecha": "2024-01-01T00:00:00Z",
+            "url_mejor_asset": "https://astrogeo-ard.s3-us-west-2.amazonaws.com/moon/kaguya/terrain_camera/usgs_dtms_v2/TC2W2B0_01_01081S894E0520__TC1W2B0_01_01081S894E0145/TC2W2B0_01_01081S894E0520__TC1W2B0_01_01081S894E0145-DEM.tif"
+          },
+          {
+            "id": "TC2W2B0_01_01071S894E0934__TC1W2B0_01_01071S897E0572",
+            "bbox": [
+              -180,
+              -90,
+              180,
+              -89.06765675934079
+            ],
+            "fecha": "2024-01-01T00:00:00Z",
+            "url_mejor_asset": "https://astrogeo-ard.s3-us-west-2.amazonaws.com/moon/kaguya/terrain_camera/usgs_dtms_v2/TC2W2B0_01_01071S894E0934__TC1W2B0_01_01071S897E0572/TC2W2B0_01_01071S894E0934__TC1W2B0_01_01071S897E0572-DEM.tif"
+          },
+          {
+            "id": "TC2W2B0_01_00970S896E1176__TC1W2B0_01_00970S893E2030",
+            "bbox": [
+              -180,
+              -90,
+              180,
+              -89.3971936376635
+            ],
+            "fecha": "2024-01-01T00:00:00Z",
+            "url_mejor_asset": "https://astrogeo-ard.s3-us-west-2.amazonaws.com/moon/kaguya/terrain_camera/usgs_dtms_v2/TC2W2B0_01_00970S896E1176__TC1W2B0_01_00970S893E2030/TC2W2B0_01_00970S896E1176__TC1W2B0_01_00970S893E2030-DEM.tif"
+          },
+          {
+            "id": "TC2W2B0_01_00970S896E1176__TC1W2B0_01_00970S892E0790",
+            "bbox": [
+              -180,
+              -90,
+              180,
+              -88.82820352272412
+            ],
+            "fecha": "2024-01-01T00:00:00Z",
+            "url_mejor_asset": "https://astrogeo-ard.s3-us-west-2.amazonaws.com/moon/kaguya/terrain_camera/usgs_dtms_v2/TC2W2B0_01_00970S896E1176__TC1W2B0_01_00970S892E0790/TC2W2B0_01_00970S896E1176__TC1W2B0_01_00970S892E0790-DEM.tif"
+          },
+          {
+            "id": "TC2W2B0_01_00969S896E1177__TC1W2B0_01_00969S892E0802",
+            "bbox": [
+              -180,
+              -90,
+              180,
+              -88.80775449301068
+            ],
+            "fecha": "2024-01-01T00:00:00Z",
+            "url_mejor_asset": "https://astrogeo-ard.s3-us-west-2.amazonaws.com/moon/kaguya/terrain_camera/usgs_dtms_v2/TC2W2B0_01_00969S896E1177__TC1W2B0_01_00969S892E0802/TC2W2B0_01_00969S896E1177__TC1W2B0_01_00969S892E0802-DEM.tif"
+          },
+          {
+            "id": "TC2W2B0_01_00968S896E1201__TC1W2B0_01_00968S893E2030",
+            "bbox": [
+              -180,
+              -90,
+              180,
+              -89.40470263586488
+            ],
+            "fecha": "2024-01-01T00:00:00Z",
+            "url_mejor_asset": "https://astrogeo-ard.s3-us-west-2.amazonaws.com/moon/kaguya/terrain_camera/usgs_dtms_v2/TC2W2B0_01_00968S896E1201__TC1W2B0_01_00968S893E2030/TC2W2B0_01_00968S896E1201__TC1W2B0_01_00968S893E2030-DEM.tif"
+          },
+          {
+            "id": "TC2W2B0_01_00968S896E1201__TC1W2B0_01_00968S892E0817",
+            "bbox": [
+              -180,
+              -90,
+              180,
+              -88.82355388910044
+            ],
+            "fecha": "2024-01-01T00:00:00Z",
+            "url_mejor_asset": "https://astrogeo-ard.s3-us-west-2.amazonaws.com/moon/kaguya/terrain_camera/usgs_dtms_v2/TC2W2B0_01_00968S896E1201__TC1W2B0_01_00968S892E0817/TC2W2B0_01_00968S896E1201__TC1W2B0_01_00968S892E0817-DEM.tif"
+          },
+          {
+            "id": "TC2W2B0_01_00967S896E1218__TC1W2B0_01_00967S893E2034",
+            "bbox": [
+              -180,
+              -90,
+              180,
+              -89.41044475817415
+            ],
+            "fecha": "2024-01-01T00:00:00Z",
+            "url_mejor_asset": "https://astrogeo-ard.s3-us-west-2.amazonaws.com/moon/kaguya/terrain_camera/usgs_dtms_v2/TC2W2B0_01_00967S896E1218__TC1W2B0_01_00967S893E2034/TC2W2B0_01_00967S896E1218__TC1W2B0_01_00967S893E2034-DEM.tif"
+          }
+        ],
+        "capas_trek": {
+          "dem": [
+            {
+              "id": "LRO_LOLA_Count_SPole45_100mp_v04",
+              "titulo": "LRO LOLA DEM S Pole, 45 deg, Count",
+              "mision": "Lunar Reconnaissance Orbiter",
+              "resolucion": 0.0,
+              "bbox": "-1095930,-1095930,1095930,1095930"
+            },
+            {
+              "id": "LRO_LOLA_Count_NPole75_30mp_v04",
+              "titulo": "LRO LOLA DEM, N Pole, 75 deg, Count",
+              "mision": "Lunar Reconnaissance Orbiter",
+              "resolucion": 0.0,
+              "bbox": "-457440,-457440,457440,457440"
+            },
+            {
+              "id": "LRO_LOLA_Count_SPole875_5mp_v04",
+              "titulo": "LRO LOLA DEM, S Pole, 87.5 deg, Count",
+              "mision": "Lunar Reconnaissance Orbiter",
+              "resolucion": 0.0,
+              "bbox": "-75840,-75840,75840,75840"
+            },
+            {
+              "id": "Philolaus_skylight_NP",
+              "titulo": "LRO NAC Mosaic 0.5mpp, Philolaus, N Pole",
+              "mision": "Lunar Reconnaissance Orbiter",
+              "resolucion": 0.5,
+              "bbox": "-339355.973,-521045.357,-247330.473,-416388.857"
+            },
+            {
+              "id": "hermite_a_dem_mosaic_1m_v3_errormap",
+              "titulo": "LRO , DEM Error Hermite-A",
+              "mision": "Lunar Reconnaissance Orbiter",
+              "resolucion": 1.0,
+              "bbox": "-60019.456,-61785.514,-43971.349,-45207.171"
+            },
+            {
+              "id": "LRO_NAC_ClrShade_86S356E_3mp",
+              "titulo": "LRO LROC DEM, Malapert Massif, ColorHillshade",
+              "mision": "Lunar Reconnaissance Orbiter",
+              "resolucion": 3.0,
+              "bbox": "-23314.5,84778.5,655.5,162406.5"
+            },
+            {
+              "id": "LRO_NAC_ClrConf_86S356E_3mp",
+              "titulo": "LRO LROC DEM, Malapert Massif, Colorized Confidence",
+              "mision": "Lunar Reconnaissance Orbiter",
+              "resolucion": 3.0,
+              "bbox": "-23314.5,84778.5,655.5,162406.5"
+            },
+            {
+              "id": "LRO_NAC_Slope_86S356E_3mp",
+              "titulo": "LRO LROC DEM, Malapert Massif, Colorized Slope",
+              "mision": "Lunar Reconnaissance Orbiter",
+              "resolucion": 3.0,
+              "bbox": "-23314.5,84778.5,655.5,162406.5"
+            }
+          ],
+          "pendiente": [
+            {
+              "id": "LRO_NAC_Slope_86S356E_3mp",
+              "titulo": "LRO LROC DEM, Malapert Massif, Colorized Slope",
+              "mision": "Lunar Reconnaissance Orbiter",
+              "resolucion": 3.0,
+              "bbox": "-23314.5,84778.5,655.5,162406.5"
+            },
+            {
+              "id": "LRO_NAC_Slope_89N023E_450cmp_v02",
+              "titulo": "LRO LROC DEM v02, Peary, Colorized Slope",
+              "mision": "Lunar Reconnaissance Orbiter",
+              "resolucion": 4.0,
+              "bbox": "-6005.25,-64199.25,32829.75,-1595.25"
+            },
+            {
+              "id": "Site20_final_adj_5mpp_Clrslp_SP",
+              "titulo": "LRO LOLA Color Slope 5 mpp, Site20: Leibnitz Beta Plateau, S Pole",
+              "mision": "Lunar Reconnaissance Orbiter",
+              "resolucion": 5.0,
+              "bbox": "65000,109995,81000,126000"
+            },
+            {
+              "id": "DM2_final_adj_5mpp_ColorSlope",
+              "titulo": "LRO LOLA Color Slope 5mpp, DM2: Nobile Rim 2, S Pole",
+              "mision": "Lunar Reconnaissance Orbiter",
+              "resolucion": 5.0,
+              "bbox": "147000,85000,167000,105000"
+            },
+            {
+              "id": "Haworth_final_adj_5mpp_ColorSlope",
+              "titulo": "LRO LOLA Color Slope 5mpp, Haworth, S Pole",
+              "mision": "Lunar Reconnaissance Orbiter",
+              "resolucion": 5.0,
+              "bbox": "-52900,75600,-23100,105400"
+            },
+            {
+              "id": "Shoemaker_final_adj_5mpp_ColorSlope",
+              "titulo": "LRO LOLA Color Slope 5mpp, Shoemaker, S Pole",
+              "mision": "Lunar Reconnaissance Orbiter",
+              "resolucion": 5.0,
+              "bbox": "66000,29000,86000,49000"
+            },
+            {
+              "id": "Site01_final_adj_5mpp_ColorSlope",
+              "titulo": "LRO LOLA Color Slope 5mpp, Site01: Connecting Ridge, S Pole",
+              "mision": "Lunar Reconnaissance Orbiter",
+              "resolucion": 5.0,
+              "bbox": "-19000,-20000,-3000,-4000"
+            },
+            {
+              "id": "Site04_final_adj_5mpp_ColorSlope",
+              "titulo": "LRO LOLA Color Slope 5mpp, Site04: Shackleton Rim, S Pole",
+              "mision": "Lunar Reconnaissance Orbiter",
+              "resolucion": 5.0,
+              "bbox": "-9000,-15235,7000,1000"
+            }
+          ],
+          "rugosidad": [
+            {
+              "id": "LRO_LOLA_ClrRoughness_NPole75N_240m",
+              "titulo": "LOLA Roughness Northpole 240m, Colorized",
+              "mision": "Lunar Reconnaissance Orbiter",
+              "resolucion": 240.0,
+              "bbox": "-457440,-457440,457440,457440"
+            },
+            {
+              "id": "LRO_LOLA_ClrRoughness_SPole75S_240m",
+              "titulo": "LOLA Roughness Southpole 240m, Colorized",
+              "mision": "Lunar Reconnaissance Orbiter",
+              "resolucion": 240.0,
+              "bbox": "-457440,-457440,457440,457440"
+            }
+          ],
+          "crateres": [
+            {
+              "id": "SchrodingerCraterMareUnit_50cmV1.0.sp",
+              "titulo": "LROC NAC Uncontrolled Mosaic of Mare Unit in Schrodinger Crater",
+              "mision": "Lunar Reconnaissance Orbiter",
+              "resolucion": 0.0,
+              "bbox": "284824.657,-406548.205,441119.804,-253435.698"
+            },
+            {
+              "id": "SchrodingerCraterMassif_50cmV1.0.sp",
+              "titulo": "LROC NAC Uncontrolled Mosaic of Massif in Schrodinger Crater",
+              "mision": "Lunar Reconnaissance Orbiter",
+              "resolucion": 0.0,
+              "bbox": "296230.69,-321385.658,406071.217,-210754.609"
+            },
+            {
+              "id": "SchrodingerMareNorth.sp",
+              "titulo": "LROC NAC Uncontrolled Mosaic of Region Inside Schrodinger Crater, 50cm/px",
+              "mision": "Lunar Reconnaissance Orbiter",
+              "resolucion": 0.0,
+              "bbox": "327730.302,-403919.608,404712.222,-326983.791"
+            },
+            {
+              "id": "LRO_NAC_CraterDetections_0_83mpp_SiteQ_SP",
+              "titulo": "LRO NAC Crater Detections 0.83mpp, Endurance-A Concept Site Q",
+              "mision": "Lunar Reconnaissance Orbiter",
+              "resolucion": 0.83,
+              "bbox": "296313.851,-347889.694,299183.991,-345018.724"
+            },
+            {
+              "id": "allSchrodinger_10mV1.0.sp",
+              "titulo": "LROC NAC Uncontrolled Mosaic of Schrodinger Crater, 10m/px",
+              "mision": "Lunar Reconnaissance Orbiter",
+              "resolucion": 9.0,
+              "bbox": "83102.41,-634704.028,634703.112,-83103.327"
+            },
+            {
+              "id": "slope_colorized_CE2_DEM_20m_Cabeus_Crater",
+              "titulo": "CE-2 CCD Color Slope, Cabeus Crater",
+              "mision": "Chang'e-2",
+              "resolucion": 20.0,
+              "bbox": "-185521.77,16814.648,-5521.77,196814.648"
+            },
+            {
+              "id": "slope_colorized_CE2_DEM_20m_Shackleton_Crater",
+              "titulo": "CE-2 CCD Color Slope, Shackleton Crater",
+              "mision": "Chang'e-2",
+              "resolucion": 20.0,
+              "bbox": "-11609.752,-27640.388,28390.248,12359.612"
+            },
+            {
+              "id": "slope_colorized_CE2_DEM_20m_Shoemaker_Crater",
+              "titulo": "CE-2 CCD Color Slope, Shoemaker Crater",
+              "mision": "Chang'e-2",
+              "resolucion": 20.0,
+              "bbox": "-11763.147,-4194.854,88236.853,95805.146"
+            }
+          ],
+          "geologia": [
+            {
+              "id": "SchrodingerCraterMareUnit_50cmV1.0.sp",
+              "titulo": "LROC NAC Uncontrolled Mosaic of Mare Unit in Schrodinger Crater",
+              "mision": "Lunar Reconnaissance Orbiter",
+              "resolucion": 0.0,
+              "bbox": "284824.657,-406548.205,441119.804,-253435.698"
+            },
+            {
+              "id": "Unified_Global_Geologic_Map_of_the_Moon_Geologic_Contacts_SP",
+              "titulo": "Unified Global Geologic Map of the Moon, Geologic Contacts",
+              "mision": "Lunar Reconnaissance Orbiter and Kaguya",
+              "resolucion": 0.0,
+              "bbox": "-930650.000062,-931050.001343,930950.001307,930950.001278"
+            },
+            {
+              "id": "Unified_Global_Geologic_Map_of_the_Moon_Geologic_Contacts_NP",
+              "titulo": "Unified Global Geologic Map of the Moon, Geologic Contacts",
+              "mision": "Lunar Reconnaissance Orbiter and Kaguya",
+              "resolucion": 0.0,
+              "bbox": "-930950,-929050,931050,931050"
+            },
+            {
+              "id": "Unified_Global_Geologic_Map_of_the_Moon_Geologic_Units_NP",
+              "titulo": "Unified Global Geologic Map of the Moon, Geologic Units",
+              "mision": "Lunar Reconnaissance Orbiter and Kaguya",
+              "resolucion": 0.0,
+              "bbox": "-931050,-931050,931050,931050"
+            },
+            {
+              "id": "Unified_Global_Geologic_Map_of_the_Moon_Geologic_Units_SP",
+              "titulo": "Unified Global Geologic Map of the Moon, Geologic Units",
+              "mision": "Lunar Reconnaissance Orbiter and Kaguya",
+              "resolucion": 0.0,
+              "bbox": "-931050,-931050.001343,931050,931050"
+            },
+            {
+              "id": "Unified_Global_Geologic_Map_of_the_Moon_Linear_Features_NP",
+              "titulo": "Unified Global Geologic Map of the Moon, Linear Features",
+              "mision": "Lunar Reconnaissance Orbiter and Kaguya",
+              "resolucion": 0.0,
+              "bbox": "-928450,-929950,931050,913036.899614"
+            },
+            {
+              "id": "Unified_Global_Geologic_Map_of_the_Moon_Linear_Features_SP",
+              "titulo": "Unified Global Geologic Map of the Moon, Linear Features",
+              "mision": "Lunar Reconnaissance Orbiter and Kaguya",
+              "resolucion": 0.0,
+              "bbox": "-931050.001342,-927750.000265,923628.832501,925050.000082"
+            },
+            {
+              "id": "hermite_a_dem_mosaic_1m_v3_errormap",
+              "titulo": "LRO , DEM Error Hermite-A",
+              "mision": "Lunar Reconnaissance Orbiter",
+              "resolucion": 1.0,
+              "bbox": "-60019.456,-61785.514,-43971.349,-45207.171"
+            }
+          ],
+          "nota_formaciones": "Formaciones geológicas: ver el mapa geológico unificado (USGS) y las capas 'geologia'. El mapeo fino se hace con el DTM descargable."
+        }
+      },
+      "termico": {
+        "nota": "usar_gds=False o GDS sin datos: descarga el CSV de Diviner o usa las capas THEMIS de Treks"
+      },
+      "superficie": {
+        "reflectancia_albedo": {
+          "nota": "sin datos de Diviner: usa las capas 'albedo' de Treks o el STAC para descargar reflectancia"
+        },
+        "tipo_roca": null,
+        "minerales_predominantes": {
+          "capas_trek": [
+            {
+              "id": "np_ol_mlemelin_031417",
+              "titulo": "Kaguya SP Olivine Abundance NP",
+              "mision": "Kaguya",
+              "resolucion": 1000.0,
+              "bbox": "-1095930,-1095930,1095930,1095930"
+            },
+            {
+              "id": "sp_olivine_mlemelin_031417",
+              "titulo": "Kaguya Spectral Profiler, Olivine Abundance SP",
+              "mision": "Kaguya",
+              "resolucion": 1000.0,
+              "bbox": "-1095930,-1095930,1095930,1095930"
+            },
+            {
+              "id": "np_feo_mlemelin_031417",
+              "titulo": "LRO LOLA and Kaguya SP FeO Abundance NP",
+              "mision": "Lunar Reconnaissance Orbiter and Kaguya",
+              "resolucion": 1000.0,
+              "bbox": "-1095930,-1095930,1095930,1095930"
+            },
+            {
+              "id": "sp_feo_mlemelin_031417",
+              "titulo": "LRO LOLA and Kaguya SP FeO Abundance SP",
+              "mision": "Lunar Reconnaissance Orbiter and Kaguya",
+              "resolucion": 1000.0,
+              "bbox": "-1095930,-1095930,1095930,1095930"
+            },
+            {
+              "id": "LP_GRS_ClrTitaniumAbundance_2ppd_NP",
+              "titulo": "LP GRS Color Ti Abundance 2ppd, Global",
+              "mision": "Lunar Prospector",
+              "resolucion": 3583.689538,
+              "bbox": "-931069.854,-932448.706,932448.706,931069.854"
+            },
+            {
+              "id": "LP_GRS_ClrTitaniumAbundance_2ppd_SP",
+              "titulo": "LP GRS Color Ti Abundance 2ppd, Global",
+              "mision": "Lunar Prospector",
+              "resolucion": 3583.689538,
+              "bbox": "-931069.854,-932448.706,932448.706,931069.854"
+            },
+            {
+              "id": "LP_GRS_TitaniumAbundance_2ppd_NP",
+              "titulo": "LP GRS Ti Abundance 2ppd, Global",
+              "mision": "Lunar Prospector",
+              "resolucion": 3583.689538,
+              "bbox": "-931069.854,-932448.706,932448.706,931069.854"
+            },
+            {
+              "id": "LP_GRS_TitaniumAbundance_2ppd_SP",
+              "titulo": "LP GRS Ti Abundance 2ppd, Global",
+              "mision": "Lunar Prospector",
+              "resolucion": 3583.689538,
+              "bbox": "-931069.854,-932448.706,932448.706,931069.854"
+            }
+          ],
+          "bundles_pds": [
+            {
+              "lidvid": "urn:nasa:pds:clementine1_lidar::1.0",
+              "titulo": "Clementine 1: LIDAR Data Bundle",
+              "url_etiqueta": "https://pds-geosciences.wustl.edu/lunar/clem1-l-lidar-3-topo-v1/cl_9xxx/bundle_clementine1_lidar.xml"
+            },
+            {
+              "lidvid": "urn:nasa:pds:clementine1_bistatic::1.0",
+              "titulo": "Clementine 1 Intermediate and Reduced Bistatic Radar Bundle",
+              "url_etiqueta": "https://pds-geosciences.wustl.edu/lunar/urn-nasa-pds-clementine1_bistatic/bundle_clementine1_bistatic.xml"
+            },
+            {
+              "lidvid": "urn:nasa:pds:clementine1_gravity_and_topography::1.0",
+              "titulo": "Clementine 1: Gravity and Topography Model Bundle",
+              "url_etiqueta": "https://pds-geosciences.wustl.edu/lunar/clem1-gravity-topo-v1/cl_8xxx/bundle_clementine1_gravity_and_topography.xml"
+            },
+            {
+              "lidvid": "urn:nasa:pds:clementine_lwir_bt::1.0",
+              "titulo": "Clementine LWIR Derived Brightness Temperature Bundle",
+              "url_etiqueta": "https://pds-geosciences.wustl.edu/lunar/clem1-l-lwir-3-rdr-v1/cl_7xxx/bundle_clementine_lwir_bt.xml"
+            }
+          ],
+          "nota": "Clementine UVVIS: albedo y abundancia relativa de Fe/Ti. Lunar Prospector: Th, K, Fe. Ambos están indexados en PDS y varios mapas aparecen como capas de Treks."
+        },
+        "materiales_y_polvo": {
+          "capas_trek": [],
+          "nota": "Toda la superficie lunar está cubierta de regolito (polvo de impacto); los mapas de parámetro H (Lucey) cuantifican su 'madurez'."
+        }
+      },
+      "iluminacion": {
+        "fraccion_diurna_observada": null,
+        "capas_iluminacion": [
+          {
+            "id": "Philolaus_skylight_NP",
+            "titulo": "LRO NAC Mosaic 0.5mpp, Philolaus, N Pole",
+            "mision": "Lunar Reconnaissance Orbiter",
+            "resolucion": 0.5,
+            "bbox": "-339355.973,-521045.357,-247330.473,-416388.857"
+          },
+          {
+            "id": "WAC_POLE_ILL_PCT_NORTH_100M",
+            "titulo": "LRO WAC Percentage-Based Illumination 100mpp, N Pole",
+            "mision": "Lunar Reconnaissance Orbiter",
+            "resolucion": 100.0,
+            "bbox": "-60816.245,-61220.537,61283.755,60979.463"
+          },
+          {
+            "id": "WAC_POLE_ILL_PCT_SOUTH_100M",
+            "titulo": "LRO WAC Percentage-Based Illumination 100mpp, S Pole",
+            "mision": "Lunar Reconnaissance Orbiter",
+            "resolucion": 100.0,
+            "bbox": "-60884.204,-61186.798,61115.796,61213.202"
+          },
+          {
+            "id": "WAC_POLE_ILL_TWI_NORTH_100M",
+            "titulo": "LRO WAC Time-Weighted Illumination 100mpp, N Pole",
+            "mision": "Lunar Reconnaissance Orbiter",
+            "resolucion": 100.0,
+            "bbox": "-60816.245,-61220.537,61283.755,60979.463"
+          },
+          {
+            "id": "WAC_POLE_ILL_TWI_SOUTH_100M",
+            "titulo": "LRO WAC Time-Weighted Illumination 100mpp, S Pole",
+            "mision": "Lunar Reconnaissance Orbiter",
+            "resolucion": 100.0,
+            "bbox": "-60884.204,-61186.798,61115.796,61213.202"
+          },
+          {
+            "id": "LRO_LOLA_Illumination_NPole65N_240m",
+            "titulo": "LOLA Permanently Shadowed Regions Northpole 240m",
+            "mision": "Lunar Reconnaissance Orbiter",
+            "resolucion": 240.0,
+            "bbox": "-770160,-770640,770640,770160"
+          },
+          {
+            "id": "LRO_LOLA_Illumination_SPole65S_240m",
+            "titulo": "LOLA Permanently Shadowed Regions Southpole 240m",
+            "mision": "Lunar Reconnaissance Orbiter",
+            "resolucion": 240.0,
+            "bbox": "-770160,-770640,770640,770160"
+          }
+        ],
+        "variaciones_exposicion": {
+          "nota": "Las capas de iluminación media (LOLA/Kaguya) resumen meses de geometría solar: % de tiempo iluminado por píxel. Para la exposición a lo largo del año, cruza esas capas con la fecha de las observaciones Diviner."
+        },
+        "zonas_sombra_psr": {
+          "capas": [
+            {
+              "id": "NAC_POLE_PSR_NORTH_STRETCH",
+              "titulo": "LRO NAC PSR Mosaic 20mpp, N Pole",
+              "mision": "Lunar Reconnaissance Orbiter",
+              "resolucion": 20.0,
+              "bbox": "-304010,-304025.323,304010,320454.677"
+            },
+            {
+              "id": "NAC_POLE_PSR_SOUTH_STRETCH",
+              "titulo": "LRO NAC PSR Mosaic 20mpp, S Pole",
+              "mision": "Lunar Reconnaissance Orbiter",
+              "resolucion": 20.0,
+              "bbox": "-304010,-320470,304010,304010"
+            },
+            {
+              "id": "LRO_LOLA_Illumination_NPole65N_240m",
+              "titulo": "LOLA Permanently Shadowed Regions Northpole 240m",
+              "mision": "Lunar Reconnaissance Orbiter",
+              "resolucion": 240.0,
+              "bbox": "-770160,-770640,770640,770160"
+            },
+            {
+              "id": "LRO_LOLA_Illumination_SPole65S_240m",
+              "titulo": "LOLA Permanently Shadowed Regions Southpole 240m",
+              "mision": "Lunar Reconnaissance Orbiter",
+              "resolucion": 240.0,
+              "bbox": "-770160,-770640,770640,770160"
+            }
+          ],
+          "nota": "Los PSR (Permanently Shadowed Regions) son zonas donde el Sol nunca supera el horizonte: allí el hielo de agua sobrevive. Para saber si el punto cae DENTRO de un PSR, muestrea la capa con rasterio o compruébalo en Moon Trek; aquí damos las capas y, si hubo datos Diviner, el indicio de fracción diurna."
+        },
+        "energia_solar": {
+          "constante_solar_wm2": 1361.0,
+          "formula": "E = S0 × fracción_iluminada",
+          "nota": "sin fracción iluminada; usa las capas de iluminación de Treks para el mapa anual"
+        }
+      }
+    }
+  }
+}

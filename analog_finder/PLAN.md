@@ -320,6 +320,55 @@ Notas de implementación:
 - [x] Revisión final de textos en español.
 - [x] App y tests corriendo sin errores.
 
+### Hito 8 — Conexión con la nube (en curso, primera parte completada)
+
+El buscador pasa del modo de ejemplo al RPC `buscar_analogos_v2` de
+Supabase. La similitud se calcula en la nube; el front solo dibuja.
+
+- [x] Catálogo real: `data/parametros.json` con los 8 parámetros que la
+      base produce (elevación, pendiente, rugosidad, temperatura media,
+      amplitud día/noche, reflectancia, fracción diurna, energía solar),
+      cada uno con `clave_db`, `unidad` y rango físico (`min`/`max`)
+      tomado de `parametros_escalas`. Los ids de categoría coinciden con
+      los del desglose del RPC (topografia, termico, superficie,
+      iluminacion). Datos de ejemplo de sitios/destinos ajustados al
+      nuevo catálogo (siguen con `es_ejemplo: true` para el modo local).
+- [x] `core/nube.py`: cliente del RPC sin Flet. `cargar_credenciales`
+      (lee `.env` de la raíz), `construir_perfil` (valores reales del
+      usuario, pesos 1, la nube renormaliza), `buscar_analogos`,
+      `datos_sitio` (fila cruda), extracción del sitio objetivo y de
+      `tierra_top5`, y textos de resultado derivados del desglose (la
+      vista no los inventa). Errores reales con `ErrorNube`.
+- [x] `core/logic.py`: `ResultadoNube` (puntajes por categoría).
+- [x] Pantalla de búsqueda: sliders de VALORES REALES con interruptor
+      por parámetro (unidades visibles: m, °, K, fracción, W/m²). La
+      selección viaja como {id_parametro: valor}.
+- [x] Pantalla previa `ui/objetivo_view.py`: muestra el sitio de
+      Luna/Marte que cumple la preferencia (nombre, tipo, coordenadas,
+      similitud global + desglose por categoría, tabla de valores del
+      sitio frente al objetivo pedido). Botón para continuar a los
+      análogos. El mapa interactivo no aplica aquí (tiles solo Tierra).
+- [x] `ui/results_view.py` y `ui/map_view.py`: soportan `ResultadoNube`
+      (barras por categoría, subtítulo tipo/país, aviso configurable).
+- [x] `main.py`: flujo nube → objetivo → resultados → mapa, con estados
+      de carga, error (mensaje real) y sin resultados. Historial que
+      guarda los valores reales elegidos (`entrada["valores"]`).
+- [x] `python -m pytest -q`: 132 pruebas aprobadas (24 nuevas de nube,
+      con HTTP simulado).
+- [ ] Verificación visual de la app en ejecución (pendiente del equipo).
+- [ ] Probar contra la DB real: falta copiar el `.env` a la raíz del repo.
+- [ ] `data/historial.json` viejo: entradas sin `valores` avisan y no se
+      reabren con valores falsos.
+
+Decisiones del hito:
+
+- La similitud vive en la nube (RPC); `core/logic.py` queda para el modo
+  local de ejemplo, hoy desconectado del flujo principal.
+- El perfil objetivo lo construye el usuario con sliders en unidades
+  físicas; no hay valores 0–1 en la pantalla de búsqueda.
+- Los parámetros sin dato en la base (viento, composición, polvo,
+  sismicidad, ángulo solar, visibilidad) salieron del catálogo.
+
 ## 5. Contrato de datos
 
 `data/parametros.json` es la lista de categorías del catálogo:

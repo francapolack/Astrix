@@ -1,15 +1,16 @@
 """Pantalla de resultados: ranking de sitios análogos.
 
-La vista recibe los resultados ya calculados por ``core/logic.py``. No lee
-archivos ni recalcula similitudes: solo presenta porcentajes, barras y textos
-que vienen de los datos.
+La vista recibe los resultados ya calculados: los del modo local
+(`core/logic.py`, ejemplo) o los de la nube (`ResultadoNube`, con desglose
+por categoría). No lee archivos ni recalcula similitudes: solo presenta
+porcentajes, barras y textos que vienen de los datos.
 """
 
 from collections.abc import Callable
 
 import flet as ft
 
-from core.logic import ResultadoAnalogo
+from core.logic import ResultadoAnalogo, ResultadoNube
 from ui.theme import COLORES, ESPACIO, RADIO, TEXTO
 
 
@@ -18,8 +19,13 @@ def _porcentaje(valor: float) -> int:
     return round(valor * 100)
 
 
-def _aviso_datos() -> ft.Container:
-    """Aviso visible sobre el carácter ilustrativo de los datos."""
+def _subtitulo_sitio(sitio: dict) -> str:
+    """Línea secundaria de la tarjeta: país (ejemplo) o tipo (nube)."""
+    return sitio.get("pais") or sitio.get("tipo") or ""
+
+
+def _aviso_datos(texto: str | None = None) -> ft.Container:
+    """Aviso visible sobre el origen de los datos."""
     return ft.Container(
         padding=ft.Padding.symmetric(
             horizontal=ESPACIO["sm"],
@@ -36,8 +42,11 @@ def _aviso_datos() -> ft.Container:
                     size=20,
                 ),
                 ft.Text(
-                    "Datos de ejemplo: los perfiles, las coordenadas y los "
-                    "puntajes de esta versión son ilustrativos.",
+                    texto
+                    or (
+                        "Datos de ejemplo: los perfiles, las coordenadas y "
+                        "los puntajes de esta versión son ilustrativos."
+                    ),
                     size=TEXTO["cuerpo"],
                     color=COLORES["texto_secundario"],
                     expand=True,
@@ -145,9 +154,25 @@ def _texto_de_apoyo(
 def _barra_parametro(
     nombre: str,
     puntaje: float,
-    peso: int,
+    detalle: str | None = None,
 ) -> ft.Column:
-    """Etiqueta, peso, porcentaje y barra de un parámetro."""
+    """Etiqueta, detalle opcional, porcentaje y barra de un puntaje."""
+    controles_derecha: list[ft.Control] = [
+        ft.Text(
+            f"{_porcentaje(puntaje)} %",
+            size=TEXTO["cuerpo"],
+            color=COLORES["texto_secundario"],
+        ),
+    ]
+    if detalle:
+        controles_derecha.insert(
+            0,
+            ft.Text(
+                detalle,
+                size=TEXTO["cuerpo"],
+                color=COLORES["texto_tenue"],
+            ),
+        )
     return ft.Column(
         controls=[
             ft.Row(
@@ -158,22 +183,13 @@ def _barra_parametro(
                         color=COLORES["texto"],
                         expand=True,
                     ),
-                    ft.Text(
-                        f"peso {peso}",
-                        size=TEXTO["cuerpo"],
-                        color=COLORES["texto_tenue"],
-                    ),
-                    ft.Text(
-                        f"{_porcentaje(puntaje)} %",
-                        size=TEXTO["cuerpo"],
-                        color=COLORES["texto_secundario"],
-                    ),
+                    *controles_derecha,
                 ],
                 spacing=ESPACIO["xs"],
                 vertical_alignment=ft.CrossAxisAlignment.CENTER,
             ),
             ft.ProgressBar(
-                value=puntaje,
+                value=max(0.0, min(1.0, puntaje)),
                 bar_height=6,
                 color=COLORES["acento"],
                 bgcolor=COLORES["superficie_alta"],
@@ -182,6 +198,22 @@ def _barra_parametro(
         ],
         spacing=ESPACIO["xs"],
     )
+
+
+def _grupos_de_categorias(
+    resultado: ResultadoNube,
+    categorias: list[dict],
+) -> list[ft.Control]:
+    """Una barra por cada categoría del desglose, en el orden del catálogo."""
+    grupos: list[ft.Control] = []
+    for categoria in categorias:
+        puntaje = resultado.puntajes.get(categoria["id"])
+        if puntaje is None:
+            continue
+        grupos.append(
+            _barra_parametro(categoria["nombre"], puntaje, "categoría"),
+        )
+    return grupos
 
 
 def _grupos_de_parametros(
@@ -215,7 +247,7 @@ def _grupos_de_parametros(
                         _barra_parametro(
                             parametro["nombre"],
                             resultado.puntajes[parametro["id"]],
-                            pesos.get(parametro["id"], 1),
+                            f"peso {pesos.get(parametro['id'], 1)}",
                         )
                         for parametro in parametros
                     ],
@@ -227,13 +259,20 @@ def _grupos_de_parametros(
 
 
 def _contenido_desplegable(
-    resultado: ResultadoAnalogo,
+    resultado: ResultadoAnalogo | ResultadoNube,
     categorias: list[dict],
     al_ver_mapa: Callable[[dict], None] | None,
     pesos: dict[str, int] | None = None,
 ) -> ft.Container:
-    """Detalle con textos, barras por parámetro y acción de mapa."""
+    """Detalle con textos, barras y acción de mapa."""
     textos = resultado.sitio["textos"]
+    if isinstance(resultado, ResultadoNube):
+        titulo_barras = "Similitud por categoría"
+        grupos = _grupos_de_categorias(resultado, categorias)
+    else:
+        titulo_barras = "Similitud por parámetro"
+        grupos = _grupos_de_parametros(resultado, categorias, pesos)
+
     controles: list[ft.Control] = [
         ft.Divider(height=1, thickness=1, color=COLORES["borde_suave"]),
         _texto_de_apoyo(
@@ -256,12 +295,12 @@ def _contenido_desplegable(
         ),
         ft.Divider(height=1, thickness=1, color=COLORES["borde_suave"]),
         ft.Text(
-            "Similitud por parámetro",
+            titulo_barras,
             size=TEXTO["cuerpo_grande"],
             weight=ft.FontWeight.W_600,
             color=COLORES["texto"],
         ),
-        *_grupos_de_parametros(resultado, categorias, pesos),
+        *grupos,
     ]
     if al_ver_mapa is not None:
         controles.append(
@@ -346,7 +385,7 @@ def _crear_tarjeta(
                                     color=COLORES["texto"],
                                 ),
                                 ft.Text(
-                                    sitio["pais"],
+                                    _subtitulo_sitio(sitio),
                                     size=TEXTO["cuerpo"],
                                     color=COLORES["texto_secundario"],
                                 ),
@@ -404,6 +443,7 @@ def _crear_tarjeta(
 def _marco(
     encabezado: ft.Control,
     contenido: ft.Control,
+    aviso_texto: str | None = None,
 ) -> ft.Container:
     """Marco común de la pantalla de resultados."""
     return ft.Container(
@@ -413,7 +453,7 @@ def _marco(
         content=ft.Column(
             controls=[
                 encabezado,
-                _aviso_datos(),
+                _aviso_datos(aviso_texto),
                 contenido,
             ],
             spacing=ESPACIO["xs"],
@@ -423,13 +463,14 @@ def _marco(
 
 
 def construir_vista_resultados(
-    resultados: list[ResultadoAnalogo],
+    resultados: list[ResultadoAnalogo] | list[ResultadoNube],
     categorias: list[dict],
     destino: dict,
     parametros: list[str],
     al_volver: Callable[[], None] | None = None,
     al_ver_mapa: Callable[[dict], None] | None = None,
     pesos: dict[str, int] | None = None,
+    aviso_texto: str | None = None,
 ) -> ft.Container:
     """Devuelve la lista ordenada de resultados lista para montar."""
     encabezado = _encabezado(
@@ -468,7 +509,7 @@ def construir_vista_resultados(
                 horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             ),
         )
-        return _marco(encabezado, contenido)
+        return _marco(encabezado, contenido, aviso_texto)
 
     lista = ft.Column(
         controls=[
@@ -485,7 +526,7 @@ def construir_vista_resultados(
         scroll=ft.ScrollMode.AUTO,
         expand=True,
     )
-    return _marco(encabezado, lista)
+    return _marco(encabezado, lista, aviso_texto)
 
 
 def construir_vista_cargando(destino: dict) -> ft.Container:

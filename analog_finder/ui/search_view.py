@@ -11,10 +11,11 @@ import flet as ft
 from ui.theme import COLORES, ESPACIO, RADIO, TEXTO
 
 # Los iconos son decisión visual de la interfaz, no un dato del catálogo.
+# Los ids coinciden con las categorías del desglose de la nube.
 ICONOS_CATEGORIA = {
     "topografia": ft.Icons.TERRAIN,
-    "clima": ft.Icons.THERMOSTAT,
-    "geologia": ft.Icons.GRAIN,
+    "termico": ft.Icons.THERMOSTAT,
+    "superficie": ft.Icons.GRAIN,
     "iluminacion": ft.Icons.WB_SUNNY,
 }
 ICONO_CATEGORIA_POR_DEFECTO = ft.Icons.CATEGORY
@@ -80,7 +81,7 @@ def _encabezado() -> ft.Container:
                                 size=16,
                             ),
                             ft.Text(
-                                "Datos de ejemplo",
+                                "Datos reales",
                                 size=TEXTO["cuerpo"],
                                 weight=ft.FontWeight.W_600,
                                 color=COLORES["aviso"],
@@ -98,7 +99,7 @@ def _encabezado() -> ft.Container:
 
 
 def _aviso_datos() -> ft.Container:
-    """Aviso visible sobre el carácter ilustrativo de los datos."""
+    """Aviso visible sobre el origen de los datos."""
     return ft.Container(
         padding=ft.Padding.symmetric(
             horizontal=ESPACIO["sm"],
@@ -115,8 +116,9 @@ def _aviso_datos() -> ft.Container:
                     size=20,
                 ),
                 ft.Text(
-                    "Datos de ejemplo: los perfiles, las coordenadas y los "
-                    "puntajes de esta versión son ilustrativos.",
+                    "Datos reales: los resultados provienen de la base de "
+                    "datos del proyecto (Supabase). Los valores objetivo "
+                    "los fija el usuario.",
                     size=TEXTO["cuerpo"],
                     color=COLORES["texto_secundario"],
                     expand=True,
@@ -126,6 +128,13 @@ def _aviso_datos() -> ft.Container:
             vertical_alignment=ft.CrossAxisAlignment.CENTER,
         ),
     )
+
+
+def _texto_valor(parametro: dict, valor: float) -> str:
+    """Formatea un valor real con su unidad para la etiqueta del slider."""
+    if parametro.get("unidad") == "fracción":
+        return f"{valor:.2f} frac."
+    return f"{valor:g} {parametro.get('unidad', '')}".strip()
 
 
 def _titulo_seccion(titulo: str, detalle: ft.Control) -> ft.Row:
@@ -147,12 +156,18 @@ def _titulo_seccion(titulo: str, detalle: ft.Control) -> ft.Row:
 
 
 class VistaBusqueda:
-    """Estado y controles de la pantalla de búsqueda."""
+    """Estado y controles de la pantalla de búsqueda.
+
+    Cada parámetro tiene un interruptor y un slider con el VALOR REAL que
+    el usuario quiere pedir (metros, grados, kelvin, fracción). Cuando la
+    selección es válida entrega el destino y {id_parametro: valor} al
+    llamador; el perfil para la nube lo arma core/nube.py.
+    """
 
     def __init__(
         self,
         categorias: list[dict],
-        al_buscar: Callable[[str, dict[str, int]], None] | None = None,
+        al_buscar: Callable[[str, dict[str, float]], None] | None = None,
     ) -> None:
         if not categorias:
             raise ValueError(
@@ -164,15 +179,18 @@ class VistaBusqueda:
         )
         self.al_buscar = al_buscar
         self.destino: str | None = None
-        self.pesos: dict[str, int] = {
-            parametro["id"]: 0
+        # Valor del slider (real) y parámetros activados por interruptor.
+        self.valores: dict[str, float] = {
+            parametro["id"]: self._valor_inicial(parametro)
             for categoria in categorias
             for parametro in categoria["parametros"]
         }
+        self.usados: set[str] = set()
         self.tarjetas: dict[str, ft.Container] = {}
         self.marcas: dict[str, ft.Icon] = {}
         self.deslizadores: dict[str, ft.Slider] = {}
-        self.etiquetas_peso: dict[str, ft.Text] = {}
+        self.etiquetas_valor: dict[str, ft.Text] = {}
+        self.interruptores: dict[str, ft.Switch] = {}
         self.subtitulos: dict[str, ft.Text] = {}
         self.cuerpos: dict[str, ft.Container] = {}
         self.flechas: dict[str, ft.Icon] = {}
@@ -441,39 +459,60 @@ class VistaBusqueda:
                 ft.Icons.EXPAND_LESS if abierta else ft.Icons.EXPAND_MORE
             )
 
+    @staticmethod
+    def _valor_inicial(parametro: dict) -> float:
+        """Valor por defecto del slider: el punto medio del rango real."""
+        minimo = float(parametro.get("min", 0.0))
+        maximo = float(parametro.get("max", 1.0))
+        return round((minimo + maximo) / 2, 2)
+
     def _crear_slider(self, parametro: dict) -> ft.Row:
-        """Slider de importancia de un parámetro, identificado por su id."""
+        """Interruptor + slider del VALOR REAL de un parámetro."""
         parametro_id = parametro["id"]
+        minimo = float(parametro.get("min", 0.0))
+        maximo = float(parametro.get("max", 1.0))
         etiqueta = ft.Text(
-            "No usado",
+            "—",
             size=TEXTO["cuerpo"],
             color=COLORES["texto_tenue"],
-            width=40,
+            width=120,
             text_align=ft.TextAlign.RIGHT,
         )
-        self.etiquetas_peso[parametro_id] = etiqueta
+        self.etiquetas_valor[parametro_id] = etiqueta
+
+        interruptor = ft.Switch(
+            value=False,
+            data=parametro_id,
+            active_color=COLORES["acento"],
+            scale=0.8,
+            on_change=self._alternar_parametro,
+        )
+        self.interruptores[parametro_id] = interruptor
 
         deslizador = ft.Slider(
-            min=0,
-            max=10,
-            divisions=10,
-            value=0,
+            min=minimo,
+            max=maximo,
+            divisions=40,
+            value=self.valores[parametro_id],
             data=parametro_id,
             active_color=COLORES["acento"],
             inactive_color=COLORES["superficie_alta"],
             thumb_color=COLORES["acento_fuerte"],
-            on_change=self._cambiar_peso,
-            width=260,
+            label=parametro["nombre"],
+            on_change=self._cambiar_valor,
+            on_change_end=self._refrescar_y_repintar,
+            width=240,
         )
         self.deslizadores[parametro_id] = deslizador
 
         return ft.Row(
             controls=[
+                interruptor,
                 ft.Text(
                     parametro["nombre"],
                     size=TEXTO["cuerpo"],
                     color=COLORES["texto"],
-                    width=160,
+                    width=140,
                 ),
                 deslizador,
                 etiqueta,
@@ -555,32 +594,68 @@ class VistaBusqueda:
             )
             self.marcas[destino["id"]].visible = elegido
 
-    def _cambiar_peso(self, evento: ft.Event[ft.Slider]) -> None:
-        """Actualiza el peso de un parámetro según el slider."""
+    def _alternar_parametro(self, evento: ft.Event[ft.Switch]) -> None:
+        """Activa o desactiva un parámetro para la búsqueda."""
         parametro_id = evento.control.data
-        valor = int(round(evento.control.value or 0))
-        self.pesos[parametro_id] = valor
-        etiqueta = self.etiquetas_peso[parametro_id]
-        if valor == 0:
-            etiqueta.value = "No usado"
-            etiqueta.color = COLORES["texto_tenue"]
+        if evento.control.value:
+            self.usados.add(parametro_id)
+            self.etiquetas_valor[parametro_id].value = _texto_valor(
+                self._parametro(parametro_id),
+                self.valores[parametro_id],
+            )
+            self.etiquetas_valor[parametro_id].color = COLORES["acento"]
         else:
-            etiqueta.value = str(valor)
-            etiqueta.color = COLORES["acento"]
+            self.usados.discard(parametro_id)
+            self.etiquetas_valor[parametro_id].value = "—"
+            self.etiquetas_valor[parametro_id].color = COLORES["texto_tenue"]
 
         self._actualizar_subtitulos()
         self._refrescar_estado()
-        etiqueta.update()
         self.raiz.update()
+
+    def _cambiar_valor(self, evento: ft.Event[ft.Slider]) -> None:
+        """Actualiza el valor real elegido para un parámetro."""
+        parametro_id = evento.control.data
+        self.valores[parametro_id] = float(evento.control.value or 0)
+        self._refrescar_y_repintar()
+
+    def _refrescar_y_repintar(self, *_: object) -> None:
+        """Repinta etiquetas, contador y botón tras mover un slider."""
+        for parametro_id in self.usados:
+            self.etiquetas_valor[parametro_id].value = _texto_valor(
+                self._parametro(parametro_id),
+                self.valores[parametro_id],
+            )
+        self._actualizar_subtitulos()
+        self._refrescar_estado()
+        self.raiz.update()
+
+    def _parametro(self, parametro_id: str) -> dict:
+        """Devuelve la definición del parámetro del catálogo."""
+        for categoria in self.categorias:
+            for parametro in categoria["parametros"]:
+                if parametro["id"] == parametro_id:
+                    return parametro
+        raise ValueError(
+            f"El catálogo no tiene el parámetro '{parametro_id}'."
+        )
 
     def reiniciar(self) -> None:
         """Limpia la selección y deja la pantalla como al inicio."""
         self.destino = None
-        for parametro_id in self.pesos:
-            self.pesos[parametro_id] = 0
-            self.deslizadores[parametro_id].value = 0
-            self.etiquetas_peso[parametro_id].value = "No usado"
-            self.etiquetas_peso[parametro_id].color = COLORES["texto_tenue"]
+        self.usados.clear()
+        for categoria in self.categorias:
+            for parametro in categoria["parametros"]:
+                parametro_id = parametro["id"]
+                self.valores[parametro_id] = self._valor_inicial(parametro)
+                self.deslizadores[parametro_id].value = self.valores[
+                    parametro_id
+                ]
+                self.interruptores[parametro_id].value = False
+                self.etiquetas_valor[parametro_id].value = "—"
+                self.etiquetas_valor[parametro_id].color = (
+                    COLORES["texto_tenue"]
+                )
         self._pintar_destinos()
         self.categorias_abiertas = {self.categorias[0]["id"]}
         self._aplicar_categorias_abiertas()
@@ -593,7 +668,7 @@ class VistaBusqueda:
             activos = sum(
                 1
                 for parametro in categoria["parametros"]
-                if self.pesos.get(parametro["id"], 0) > 0
+                if parametro["id"] in self.usados
             )
             self.subtitulos[categoria["id"]].value = self._texto_categoria(
                 categoria,
@@ -602,7 +677,7 @@ class VistaBusqueda:
 
     def _refrescar_estado(self) -> None:
         """Sincroniza contador, ayuda y disponibilidad del botón."""
-        total = sum(1 for peso in self.pesos.values() if peso > 0)
+        total = len(self.usados)
         listo = bool(self.destino and total)
         self.contador_parametros.value = (
             f"{total} de {self.total_parametros} activos"
@@ -612,7 +687,7 @@ class VistaBusqueda:
 
     def _texto_ayuda(self, listo: bool) -> str:
         """Explica qué falta para habilitar la búsqueda."""
-        activos = sum(1 for peso in self.pesos.values() if peso > 0)
+        activos = len(self.usados)
         if not self.destino and not activos:
             return "Elegí un destino y al menos un parámetro para buscar."
         if not self.destino:
@@ -636,13 +711,12 @@ class VistaBusqueda:
         return f"{activos} de {total} activos"
 
     def _buscar(self, _: ft.Event[ft.FilledButton]) -> None:
-        """Entrega la selección válida al llamador."""
-        pesos_activos = {
-            parametro: peso
-            for parametro, peso in self.pesos.items()
-            if peso > 0
+        """Entrega la selección válida (valores reales) al llamador."""
+        seleccion = {
+            parametro_id: self.valores[parametro_id]
+            for parametro_id in self.usados
         }
-        if not self.destino or not pesos_activos:
+        if not self.destino or not seleccion:
             return
         if self.al_buscar is not None:
-            self.al_buscar(self.destino, pesos_activos)
+            self.al_buscar(self.destino, seleccion)

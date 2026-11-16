@@ -1,8 +1,11 @@
 """Punto de entrada de Analog Finder.
 
-Hito 6: desde cada resultado se abre un mapamundi con todos los sitios del
-ranking, sus marcadores clickeables y el sitio de origen resaltado. El
-historial persistente del hito 5 se mantiene en la barra lateral.
+El flujo va contra la nube (Supabase RPC v2, ver supabase/rpc_v2.sql):
+1) el usuario elige destino y valores reales por parámetro,
+2) el RPC devuelve el sitio de Luna/Marte que cumple esa preferencia,
+3) una pantalla previa muestra ESE sitio (lugar de referencia),
+4) con el mismo perfil se muestran los análogos terrestres y el mapa.
+El historial persistente se mantiene en la barra lateral.
 """
 
 import asyncio
@@ -10,25 +13,39 @@ import traceback
 
 import flet as ft
 
-from core.logic import ResultadoAnalogo, rankear_sitios
+from core.logic import ResultadoNube
+from core.nube import (
+    ErrorNube,
+    adaptar_sitio_nube,
+    buscar_analogos,
+    cargar_credenciales,
+    construir_perfil,
+    datos_sitio,
+    extraer_analogos_tierra,
+    extraer_sitio_objetivo,
+)
 from core.repository import (
     ErrorDatos,
     borrar_busqueda,
     cargar_categorias,
-    cargar_destinos,
     cargar_historial,
-    cargar_sitios,
     guardar_busqueda,
 )
 from ui.map_view import construir_vista_mapa
+from ui.objetivo_view import construir_vista_objetivo
 from ui.results_view import (
     construir_vista_cargando,
     construir_vista_error,
     construir_vista_resultados,
 )
-from ui.search_view import VistaBusqueda
+from ui.search_view import DESTINOS, VistaBusqueda
 from ui.sidebar import BarraLateral
 from ui.theme import COLORES, RADIO, TEXTO, aplicar_tema
+
+AVISO_DATOS_REALES = (
+    "Datos reales: los resultados provienen de la base de datos del "
+    "proyecto (Supabase)."
+)
 
 
 def _aviso(page: ft.Page, mensaje: str) -> None:
@@ -48,10 +65,8 @@ def _aviso(page: ft.Page, mensaje: str) -> None:
 
 
 def construir_pantalla(page: ft.Page) -> ft.Row:
-    """Arma la app y conecta historial, búsqueda, ranking y resultados."""
+    """Arma la app y conecta búsqueda, sitio objetivo, resultados y mapa."""
     categorias = cargar_categorias()
-    destinos = cargar_destinos()
-    sitios = cargar_sitios()
 
     try:
         historial = cargar_historial()
@@ -62,9 +77,13 @@ def construir_pantalla(page: ft.Page) -> ft.Row:
         error_historial = None
 
     contenido = ft.Container(expand=True)
-    resultados_actuales: list[ResultadoAnalogo] = []
+    resultados_actuales: list[ResultadoNube] = []
     destino_actual: dict | None = None
     vista_resultados: ft.Container | None = None
+    # Respuesta de la nube pendiente de pasar a resultados, y su selección.
+    respuesta_pendiente: dict | None = None
+    seleccion_pendiente: dict[str, float] = {}
+    guardar_pendiente = False
 
     def mostrar_busqueda(reiniciar: bool = False) -> None:
         """Vuelve a la búsqueda, opcionalmente con la selección limpia."""
@@ -94,24 +113,22 @@ def construir_pantalla(page: ft.Page) -> ft.Row:
         )
         contenido.update()
 
-    async def calcular(
-        destino_id: str,
-        pesos: dict,
-        guardar: bool,
-    ) -> None:
-        """Muestra carga, calcula el ranking y presenta el resultado real."""
+    def mostrar_error(mensaje: str) -> None:
+        """Muestra el error real y da salida a la búsqueda."""
+        traceback.print_exc()
+        contenido.content = construir_vista_error(mensaje, mostrar_busqueda)
+        contenido.update()
+
+    async def calcular(destino_id: str, seleccion: dict[str, float]) -> None:
+        """Consulta la nube: perfil → sitio objetivo → pantalla previa."""
         nonlocal historial, error_historial
-        nonlocal resultados_actuales, destino_actual, vista_resultados
+        nonlocal respuesta_pendiente, seleccion_pendiente
         destino = next(
-            (item for item in destinos if item["id"] == destino_id),
+            (item for item in DESTINOS if item["id"] == destino_id),
             None,
         )
         if destino is None:
-            contenido.content = construir_vista_error(
-                f"No se encontró el destino '{destino_id}'.",
-                mostrar_busqueda,
-            )
-            contenido.update()
+            mostrar_error(f"No se encontró el destino '{destino_id}'.")
             return
 
         contenido.content = construir_vista_cargando(destino)
@@ -120,19 +137,58 @@ def construir_pantalla(page: ft.Page) -> ft.Row:
         await asyncio.sleep(0.05)
 
         try:
-            resultados = rankear_sitios(sitios, destino, pesos)
-        except Exception as error:
-            traceback.print_exc()
-            contenido.content = construir_vista_error(
-                str(error),
-                mostrar_busqueda,
-            )
-            contenido.update()
+            perfil = construir_perfil(categorias, seleccion)
+            url, clave = cargar_credenciales()
+            respuesta = buscar_analogos(url, clave, perfil)
+            objetivo = extraer_sitio_objetivo(respuesta, destino_id)
+            datos = datos_sitio(url, clave, objetivo["sitio_id"])
+        except (ErrorNube, ValueError) as error:
+            mostrar_error(str(error))
             return
 
-        if guardar:
+        respuesta_pendiente = respuesta
+        seleccion_pendiente = dict(seleccion)
+
+        contenido.content = construir_vista_objetivo(
+            objetivo,
+            datos,
+            destino,
+            categorias,
+            seleccion,
+            AVISO_DATOS_REALES,
+            al_volver=mostrar_busqueda,
+            al_continuar=ir_a_resultados,
+        )
+        contenido.update()
+
+    def ir_a_resultados() -> None:
+        """Pasa de la pantalla del sitio objetivo a los análogos terrestres."""
+        nonlocal historial, error_historial
+        nonlocal resultados_actuales, destino_actual, vista_resultados
+        nonlocal guardar_pendiente
+        if respuesta_pendiente is None:
+            mostrar_busqueda()
+            return
+        destino = destino_actual or DESTINOS[0]
+
+        try:
+            analogos = extraer_analogos_tierra(respuesta_pendiente)
+            resultados = [
+                adaptar_sitio_nube(fila, categorias) for fila in analogos
+            ]
+        except (ErrorNube, ValueError) as error:
+            mostrar_error(str(error))
+            return
+
+        if guardar_pendiente:
+            guardar_pendiente = False
             try:
-                entrada = guardar_busqueda(destino, pesos, categorias)
+                entrada = guardar_busqueda(
+                    destino,
+                    {p: 1 for p in seleccion_pendiente},
+                    categorias,
+                    valores=dict(seleccion_pendiente),
+                )
             except (ErrorDatos, ValueError) as error:
                 _aviso(page, f"No se pudo guardar la búsqueda: {error}")
             else:
@@ -142,37 +198,55 @@ def construir_pantalla(page: ft.Page) -> ft.Row:
                 barra.raiz.update()
 
         resultados_actuales = resultados
-        destino_actual = destino
-        parametros = list(pesos)
         vista_resultados = construir_vista_resultados(
             resultados,
             categorias,
             destino,
-            parametros,
+            list(seleccion_pendiente),
             al_volver=mostrar_busqueda,
             al_ver_mapa=al_ver_mapa,
-            pesos=pesos,
+            aviso_texto=AVISO_DATOS_REALES,
         )
         contenido.content = vista_resultados
         contenido.update()
 
-    def al_buscar(destino_id: str, pesos: dict) -> None:
+    def al_buscar(destino_id: str, seleccion: dict[str, float]) -> None:
         """Lanza la búsqueda manual y guarda el resultado en el historial."""
-        page.run_task(calcular, destino_id, pesos, True)
+        nonlocal destino_actual, guardar_pendiente
+        destino_actual = next(
+            (item for item in DESTINOS if item["id"] == destino_id),
+            None,
+        )
+        guardar_pendiente = True
+        page.run_task(calcular, destino_id, seleccion)
 
     def al_abrir_historial(entrada: dict) -> None:
         """Reabre una búsqueda guardada sin duplicarla."""
-        pesos = entrada.get("pesos")
-        if not isinstance(pesos, dict):
-            pesos = {
-                parametro: 5 for parametro in entrada.get("parametros", [])
-            }
-        page.run_task(
-            calcular,
-            entrada["destino_id"],
-            pesos,
-            False,
+        nonlocal destino_actual, guardar_pendiente
+        destino_actual = next(
+            (
+                item
+                for item in DESTINOS
+                if item["id"] == entrada["destino_id"]
+            ),
+            None,
         )
+        guardar_pendiente = False
+        valores = entrada.get("valores")
+        seleccion: dict[str, float] = {}
+        if isinstance(valores, dict):
+            seleccion = {
+                parametro: float(valor)
+                for parametro, valor in valores.items()
+            }
+        if not seleccion:
+            _aviso(
+                page,
+                "Esta entrada no guardó los valores elegidos; "
+                "repetí la búsqueda para verla con valores reales.",
+            )
+            return
+        page.run_task(calcular, entrada["destino_id"], seleccion)
 
     def al_borrar_historial(entrada_id: str) -> None:
         """Borra una entrada y repinta la barra lateral."""

@@ -12,13 +12,9 @@
       "rugosidad": 0.5,
       "temperatura": 0.2,
       "amplitud_termica": 0.6,
-      "viento": 0.35,
-      "composicion": 0.5,
-      "polvo": 0.75,
-      "actividad_sismica": 0.35,
       "horas_luz": 0.85,
-      "angulo_solar": 0.8,
-      "visibilidad": 0.95
+      "reflectancia": 0.4,
+      "energia_solar": 0.5
     },
     "textos": {
       "similar": "Extensión árida, cielo despejado y suelos secos con poca vegetación se parecen a la superficie lunar y marciana.",
@@ -39,13 +35,9 @@
       "rugosidad": 0.45,
       "temperatura": 0.03,
       "amplitud_termica": 0.55,
-      "viento": 0.7,
-      "composicion": 0.45,
-      "polvo": 0.6,
-      "actividad_sismica": 0.1,
       "horas_luz": 0.4,
-      "angulo_solar": 0.2,
-      "visibilidad": 0.85
+      "reflectancia": 0.4,
+      "energia_solar": 0.5
     },
     "textos": {
       "similar": "Frío extremo, escasa humedad y suelos minerales expuestos recuerdan a los paisajes polares de la Luna y Marte.",
@@ -66,13 +58,9 @@
       "rugosidad": 0.7,
       "temperatura": 0.0,
       "amplitud_termica": 0.7,
-      "viento": 0.55,
-      "composicion": 0.55,
-      "polvo": 0.5,
-      "actividad_sismica": 0.15,
       "horas_luz": 0.35,
-      "angulo_solar": 0.25,
-      "visibilidad": 0.8
+      "reflectancia": 0.4,
+      "energia_solar": 0.5
     },
     "textos": {
       "similar": "Es un desierto polar con un cráter de impacto bien conservado y muy poca cobertura vegetal.",
@@ -93,13 +81,9 @@
       "rugosidad": 0.4,
       "temperatura": 0.55,
       "amplitud_termica": 0.5,
-      "viento": 0.2,
-      "composicion": 0.85,
-      "polvo": 0.15,
-      "actividad_sismica": 0.1,
       "horas_luz": 0.8,
-      "angulo_solar": 0.7,
-      "visibilidad": 0.7
+      "reflectancia": 0.4,
+      "energia_solar": 0.5
     },
     "textos": {
       "similar": "Sus minerales de hierro y su química ácida se usan como análogo de ambientes marcianos ricos en óxidos.",
@@ -120,13 +104,9 @@
       "rugosidad": 0.75,
       "temperatura": 0.6,
       "amplitud_termica": 0.35,
-      "viento": 0.4,
-      "composicion": 0.9,
-      "polvo": 0.3,
-      "actividad_sismica": 0.45,
       "horas_luz": 0.85,
-      "angulo_solar": 0.75,
-      "visibilidad": 0.8
+      "reflectancia": 0.4,
+      "energia_solar": 0.5
     },
     "textos": {
       "similar": "Lavas basálticas recientes, conos y cenizas ofrecen un paisaje volcánico parecido al de Marte.",
@@ -147,13 +127,9 @@
       "rugosidad": 0.8,
       "temperatura": 0.8,
       "amplitud_termica": 0.2,
-      "viento": 0.3,
-      "composicion": 0.95,
-      "polvo": 0.2,
-      "actividad_sismica": 0.9,
       "horas_luz": 0.9,
-      "angulo_solar": 0.8,
-      "visibilidad": 0.75
+      "reflectancia": 0.4,
+      "energia_solar": 0.5
     },
     "textos": {
       "similar": "El basalto activo y los flujos de lava reproducen la geología ígnea que se espera encontrar en Marte.",
@@ -174,13 +150,9 @@
       "rugosidad": 0.55,
       "temperatura": 0.95,
       "amplitud_termica": 0.8,
-      "viento": 0.6,
-      "composicion": 0.45,
-      "polvo": 0.85,
-      "actividad_sismica": 0.3,
       "horas_luz": 0.9,
-      "angulo_solar": 0.85,
-      "visibilidad": 0.7
+      "reflectancia": 0.4,
+      "energia_solar": 0.5
     },
     "textos": {
       "similar": "Calor extremo, dunas y costras de sal crean un ambiente desértico con muy poca agua disponible.",
@@ -201,13 +173,9 @@
       "rugosidad": 0.05,
       "temperatura": 0.25,
       "amplitud_termica": 0.7,
-      "viento": 0.5,
-      "composicion": 0.3,
-      "polvo": 0.35,
-      "actividad_sismica": 0.2,
       "horas_luz": 0.85,
-      "angulo_solar": 0.8,
-      "visibilidad": 1.0
+      "reflectancia": 0.4,
+      "energia_solar": 0.5
     },
     "textos": {
       "similar": "Su superficie plana y brillante simplifica la navegación y las pruebas de movilidad, como en llanuras de Marte.",
@@ -228,13 +196,9 @@
       "rugosidad": 0.6,
       "temperatura": 0.75,
       "amplitud_termica": 0.6,
-      "viento": 0.35,
-      "composicion": 0.5,
-      "polvo": 0.7,
-      "actividad_sismica": 0.4,
       "horas_luz": 0.9,
-      "angulo_solar": 0.85,
-      "visibilidad": 0.9
+      "reflectancia": 0.4,
+      "energia_solar": 0.5
     },
     "textos": {
       "similar": "Suelos secos, rocas expuestas y polvo fino permiten ensayar operaciones de superficie similares a Marte.",
@@ -255,13 +219,9 @@
       "rugosidad": 0.65,
       "temperatura": 0.02,
       "amplitud_termica": 0.6,
-      "viento": 0.6,
-      "composicion": 0.4,
-      "polvo": 0.4,
-      "actividad_sismica": 0.15,
       "horas_luz": 0.3,
-      "angulo_solar": 0.15,
-      "visibilidad": 0.85
+      "reflectancia": 0.4,
+      "energia_solar": 0.5
     },
     "textos": {
       "similar": "La luz rasante, el frío y los valles glaciares se parecen a las condiciones polares lunares.",
@@ -282,13 +242,9 @@
       "rugosidad": 0.6,
       "temperatura": 0.01,
       "amplitud_termica": 0.75,
-      "viento": 0.5,
-      "composicion": 0.6,
-      "polvo": 0.45,
-      "actividad_sismica": 0.1,
       "horas_luz": 0.25,
-      "angulo_solar": 0.2,
-      "visibilidad": 0.8
+      "reflectancia": 0.4,
+      "energia_solar": 0.5
     },
     "textos": {
       "similar": "Depósitos de yeso y suelos fríos y secos se consideran análogos de minerales hallados en Marte.",
@@ -309,13 +265,9 @@
       "rugosidad": 0.5,
       "temperatura": 0.85,
       "amplitud_termica": 0.55,
-      "viento": 0.3,
-      "composicion": 0.75,
-      "polvo": 0.6,
-      "actividad_sismica": 0.25,
       "horas_luz": 0.9,
-      "angulo_solar": 0.85,
-      "visibilidad": 0.85
+      "reflectancia": 0.4,
+      "energia_solar": 0.5
     },
     "textos": {
       "similar": "Rocas muy antiguas y suelos ferruginosos permiten estudiar procesos geológicos comparables a los de Marte.",

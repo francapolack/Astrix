@@ -4,29 +4,68 @@
     "nombre": "Topografía",
     "descripcion": "Relieve, altura y forma del terreno.",
     "parametros": [
-      {"id": "elevacion", "nombre": "Elevación"},
-      {"id": "pendiente", "nombre": "Pendiente"},
-      {"id": "rugosidad", "nombre": "Rugosidad del terreno"}
+      {
+        "id": "elevacion",
+        "nombre": "Elevación",
+        "clave_db": "elevacion_media_m",
+        "unidad": "m",
+        "min": -11000.0,
+        "max": 9000.0
+      },
+      {
+        "id": "pendiente",
+        "nombre": "Pendiente",
+        "clave_db": "pendiente_media_grados",
+        "unidad": "°",
+        "min": 0.0,
+        "max": 60.0
+      },
+      {
+        "id": "rugosidad",
+        "nombre": "Rugosidad del terreno",
+        "clave_db": "rugosidad_media_m",
+        "unidad": "m",
+        "min": 0.0,
+        "max": 50.0
+      }
     ]
   },
   {
-    "id": "clima",
-    "nombre": "Clima",
-    "descripcion": "Condiciones térmicas y atmosféricas.",
+    "id": "termico",
+    "nombre": "Clima térmico",
+    "descripcion": "Temperaturas medias y oscilación térmica.",
     "parametros": [
-      {"id": "temperatura", "nombre": "Temperatura media"},
-      {"id": "amplitud_termica", "nombre": "Amplitud térmica"},
-      {"id": "viento", "nombre": "Velocidad del viento"}
+      {
+        "id": "temperatura",
+        "nombre": "Temperatura media",
+        "clave_db": "temperatura_media_k",
+        "unidad": "K",
+        "min": 20.0,
+        "max": 340.0
+      },
+      {
+        "id": "amplitud_termica",
+        "nombre": "Amplitud térmica día/noche",
+        "clave_db": "diferencia_dia_noche_k",
+        "unidad": "K",
+        "min": 0.0,
+        "max": 250.0
+      }
     ]
   },
   {
-    "id": "geologia",
-    "nombre": "Geología",
-    "descripcion": "Composición, polvo y estabilidad del suelo.",
+    "id": "superficie",
+    "nombre": "Superficie",
+    "descripcion": "Brillo y composición del terreno.",
     "parametros": [
-      {"id": "composicion", "nombre": "Composición del suelo"},
-      {"id": "polvo", "nombre": "Cobertura de polvo"},
-      {"id": "actividad_sismica", "nombre": "Actividad sísmica"}
+      {
+        "id": "reflectancia",
+        "nombre": "Reflectancia (albedo)",
+        "clave_db": "reflectancia_media",
+        "unidad": "fracción",
+        "min": 0.0,
+        "max": 1.0
+      }
     ]
   },
   {
@@ -34,9 +73,22 @@
     "nombre": "Iluminación",
     "descripcion": "Luz disponible para operar en superficie.",
     "parametros": [
-      {"id": "horas_luz", "nombre": "Horas de luz"},
-      {"id": "angulo_solar", "nombre": "Ángulo solar"},
-      {"id": "visibilidad", "nombre": "Visibilidad atmosférica"}
+      {
+        "id": "horas_luz",
+        "nombre": "Fracción de luz diurna",
+        "clave_db": "fraccion_diurna",
+        "unidad": "fracción",
+        "min": 0.0,
+        "max": 1.0
+      },
+      {
+        "id": "energia_solar",
+        "nombre": "Energía solar media",
+        "clave_db": "energia_solar_media_wm2",
+        "unidad": "W/m²",
+        "min": 0.0,
+        "max": 1361.0
+      }
     ]
   }
 ]

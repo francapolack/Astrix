@@ -11,13 +11,9 @@
       "rugosidad": 0.85,
       "temperatura": 0.08,
       "amplitud_termica": 0.95,
-      "viento": 0.0,
-      "composicion": 0.62,
-      "polvo": 0.9,
-      "actividad_sismica": 0.25,
       "horas_luz": 0.35,
-      "angulo_solar": 0.15,
-      "visibilidad": 1.0
+      "reflectancia": 0.4,
+      "energia_solar": 0.5
     }
   },
   {
@@ -32,13 +28,9 @@
       "rugosidad": 0.55,
       "temperatura": 0.18,
       "amplitud_termica": 0.75,
-      "viento": 0.55,
-      "composicion": 0.7,
-      "polvo": 0.8,
-      "actividad_sismica": 0.3,
       "horas_luz": 0.5,
-      "angulo_solar": 0.45,
-      "visibilidad": 0.75
+      "reflectancia": 0.4,
+      "energia_solar": 0.5
     }
   }
 ]

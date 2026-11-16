@@ -21,6 +21,20 @@ class ResultadoAnalogo:
     total: float
 
 
+@dataclass(frozen=True)
+class ResultadoNube:
+    """Resultado del buscador de la nube con desglose por categoría.
+
+    `puntajes` va indexado por id de CATEGORÍA (los ids del catálogo
+    coinciden con los del desglose del RPC: topografia, termico,
+    superficie, iluminacion); `total` es la similitud global.
+    """
+
+    sitio: dict
+    puntajes: dict[str, float]
+    total: float
+
+
 def similitud_parametro(valor_sitio: float, valor_destino: float) -> float:
     """Diferencia normalizada: 1 es igual y 0 es opuesto."""
     _validar_valor(valor_sitio, "sitio")

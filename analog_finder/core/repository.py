@@ -120,12 +120,15 @@ def guardar_busqueda(
     pesos: dict,
     categorias: list[dict],
     ruta_datos: Path | None = None,
+    valores: dict | None = None,
 ) -> dict:
     """Agrega una búsqueda al historial y devuelve la entrada creada.
 
     La entrada guarda el nombre del destino, los parámetros activos, sus
     pesos y las categorías derivadas, para que la barra lateral y los
-    resultados no dependan del catálogo.
+    resultados no dependan del catálogo. En el modo nube, `valores`
+    guarda el valor real (metros, grados, kelvin) elegido por el usuario
+    para cada parámetro, para poder reabrir la búsqueda tal cual.
     """
     if not isinstance(destino, dict):
         raise ValueError("El destino de la búsqueda debe ser un objeto.")
@@ -139,6 +142,25 @@ def guardar_busqueda(
     activos = _pesos_activos_historial(pesos)
     parametros = list(activos)
     nombres_categorias = _categorias_de_parametros(parametros, categorias)
+    valores_reales: dict[str, float] | None = None
+    if valores is not None:
+        if not isinstance(valores, dict) or not valores:
+            raise ValueError("Los valores de la búsqueda deben ser un objeto.")
+        valores_reales = {}
+        for parametro, valor in valores.items():
+            if not isinstance(parametro, str) or not parametro.strip():
+                raise ValueError(
+                    "El id del parámetro debe ser un texto no vacío."
+                )
+            if isinstance(valor, bool) or not isinstance(valor, (int, float)):
+                raise ValueError(
+                    f"El valor de '{parametro}' debe ser un número."
+                )
+            valores_reales[parametro] = float(valor)
+        if set(valores_reales) != set(parametros):
+            raise ValueError(
+                "Los valores no coinciden con los parámetros de la búsqueda."
+            )
     entrada = {
         "id": uuid4().hex,
         "fecha": datetime.now().isoformat(timespec="seconds"),
@@ -148,6 +170,8 @@ def guardar_busqueda(
         "pesos": {parametro: int(peso) for parametro, peso in activos.items()},
         "categorias": nombres_categorias,
     }
+    if valores_reales is not None:
+        entrada["valores"] = valores_reales
 
     historial = cargar_historial(ruta_datos)
     historial.insert(0, entrada)

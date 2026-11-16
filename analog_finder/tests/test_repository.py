@@ -102,8 +102,13 @@ def test_cargar_categorias_del_proyecto():
         for categoria in categorias
         for parametro in categoria["parametros"]
     ]
-    assert len(parametros) == 12
-    assert len({parametro["id"] for parametro in parametros}) == 12
+    assert len(parametros) == 8
+    assert len({parametro["id"] for parametro in parametros}) == 8
+    # Cada parámetro real trae su clave de la base y su rango físico.
+    for parametro in parametros:
+        assert parametro["clave_db"]
+        assert "unidad" in parametro
+        assert parametro["max"] > parametro["min"]
 
 
 def test_cargar_destinos_del_proyecto():

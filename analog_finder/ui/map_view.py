@@ -1,4 +1,4 @@
-"""Pantalla de mapa: ubicación geográfica de los sitios del ranking.
+﻿"""Pantalla de mapa: ubicación geográfica de los sitios del ranking.
 
 La vista recibe ``ResultadoAnalogo`` ya calculados. No lee archivos ni
 recalcula similitudes: dibuja un marcador por sitio y muestra el nombre y el
@@ -11,7 +11,7 @@ from math import cos, hypot, radians
 import flet as ft
 import flet_map as fm
 
-from core.logic import ResultadoAnalogo
+from core.logic import ResultadoAnalogo, ResultadoNube
 from ui.theme import COLORES, ESPACIO, RADIO, TEXTO
 
 URL_TILES = "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -185,7 +185,7 @@ def _aviso_tiles() -> ft.Container:
 
 
 def _marcador(
-    resultado: ResultadoAnalogo,
+    resultado: ResultadoAnalogo | ResultadoNube,
 ) -> tuple[fm.Marker, ft.Container, ft.Icon]:
     """Marcador con su contenedor e ícono para repintar."""
     sitio = resultado.sitio
@@ -211,12 +211,12 @@ def _marcador(
 
 
 def _sitio_mas_cercano(
-    resultados: list[ResultadoAnalogo],
+    resultados: list[ResultadoAnalogo] | list[ResultadoNube],
     latitud: float,
     longitud: float,
 ) -> ResultadoAnalogo | None:
     """Busca el sitio dentro del radio de toque de un clic en el mapa."""
-    mejor: ResultadoAnalogo | None = None
+    mejor: ResultadoAnalogo | ResultadoNube | None = None
     mejor_distancia = RADIO_TOQUE
     for resultado in resultados:
         sitio = resultado.sitio
@@ -407,7 +407,7 @@ def _estado_vacio(al_volver: Callable[[], None]) -> ft.Container:
 
 
 def construir_vista_mapa(
-    resultados: list[ResultadoAnalogo],
+    resultados: list[ResultadoAnalogo] | list[ResultadoNube],
     destino: dict,
     sitio_origen_id: str,
     al_volver: Callable[[], None],
@@ -426,7 +426,7 @@ def construir_vista_mapa(
     aviso_tiles = _aviso_tiles()
     por_id = {resultado.sitio["id"]: resultado for resultado in resultados}
 
-    def pintar_detalle(resultado: ResultadoAnalogo) -> None:
+    def pintar_detalle(resultado: ResultadoAnalogo | ResultadoNube) -> None:
         """Actualiza la tarjeta con el sitio elegido."""
         sitio = resultado.sitio
         textos["icono"].icon = (
@@ -440,11 +440,12 @@ def construir_vista_mapa(
         textos["nombre"].value = sitio["nombre"]
         textos["origen"].visible = sitio["id"] == sitio_origen_id
         textos["detalle"].value = (
-            f"{sitio['pais']} · {_coordenadas(sitio['lat'], sitio['lon'])}"
+            f"{(sitio.get('pais') or sitio.get('tipo') or '')}"
+            f" · {_coordenadas(sitio['lat'], sitio['lon'])}"
         )
         textos["porcentaje"].value = f"{_porcentaje(resultado.total)} %"
 
-    def al_seleccionar(resultado: ResultadoAnalogo) -> None:
+    def al_seleccionar(resultado: ResultadoAnalogo | ResultadoNube) -> None:
         """Repinta los marcadores y la tarjeta al tocar un sitio."""
         nonlocal seleccionado
         seleccionado = resultado.sitio["id"]
